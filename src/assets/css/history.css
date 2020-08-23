@@ -1,0 +1,244 @@
+/* body {
+    background-color: #e5e5e5;
+    font-size: 18px;
+    font-family: "Dosis", sans-serif;
+  } */
+
+/* top md8 */
+/* menu */
+.home .row {
+  background: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.col-md-1 {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 10px;
+  background: white;
+}
+.col-md-11 {
+  position: relative;
+  width: 100%;
+  background: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* img {
+      vertical-align: middle;
+      border-style: none;
+    } */
+img.menu-icon {
+  padding-top: 20px;
+  padding-left: 15px;
+  padding-bottom: 20px;
+}
+
+/* history */
+.col-md-11 p {
+  font-weight: bold;
+  font-size: 30px;
+  padding-top: 10px;
+}
+
+/* --------------------------------------------------- */
+/* sidebar */
+.sidebar .row {
+  display: flex;
+  flex-wrap: wrap;
+
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.sidebar .col-md-1 {
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+/* icon */
+.sidebar img {
+  width: 35px;
+}
+.col-md-1 .fork {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.col-md-1 .clipboard {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.col-md-1 .add {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* ------------------------------------------------ */
+/* menu */
+
+.history .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+main .history {
+  background: rgba(190, 195, 202, 0.3);
+}
+.history .income {
+  display: flex;
+  justify-content: space-around;
+}
+.history .income h4 {
+  font-size: 15px;
+  margin-top: 40px;
+}
+.history .income p {
+  font-size: 20px;
+  margin-top: -20px;
+  margin-bottom: 0px;
+}
+.history .left {
+  width: 400px;
+  height: 215px;
+  margin-top: 20px;
+  top: 0;
+  background: linear-gradient(
+    285.38deg,
+    #fbb2b4 30.05%,
+    rgba(255, 143, 178, 0) 133.19%
+  );
+  filter: drop-shadow(10px 15px 10px rgba(255, 143, 178, 0.25));
+  border-radius: 10px;
+}
+.history .mid {
+  width: 400px;
+  height: 215px;
+  margin-top: 20px;
+  top: 0;
+  background: linear-gradient(
+    285.38deg,
+    #29dfff 30.05%,
+    rgba(41, 223, 255, 0) 133.19%
+  );
+  filter: drop-shadow(10px 15px 10px rgba(41, 223, 255, 0.25));
+  border-radius: 10px;
+}
+
+.history .right {
+  width: 400px;
+  height: 215px;
+  margin-top: 20px;
+  top: 0;
+  background: linear-gradient(
+    285.38deg,
+    #ab84c8 30.05%,
+    rgba(241, 201, 236, 0) 133.19%
+  );
+  filter: drop-shadow(10px 15px 10px rgba(241, 201, 236, 0.25));
+  border-radius: 10px;
+}
+
+/* ------------------------------------- */
+/* row2 chart */
+.history .chart {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 50px;
+}
+
+/* ------------------------------------------ */
+/* row3 recent order */
+.history .row .recent {
+  background-color: white;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 20px;
+}
+.history .recent {
+  display: flex;
+  justify-content: space-between;
+}
+
+.history .recent h4 {
+  margin-top: 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.recent .dropdown {
+  margin-bottom: 5px;
+}
+
+.history .recent .btn {
+  margin-top: 5px;
+  font-size: 10px;
+  font-weight: bold;
+  color: black;
+  background: #cecece;
+  border-radius: 10px;
+}
+
+.history .order {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+}
+.history .order p {
+  margin-bottom: -15px;
+  font-size: 15px;
+}
+.history .order h6 {
+  margin-top: -10px;
+  color: grey;
+  font-size: 12px;
+}
+
+/* RESPONSIVE */
+/* small size */
+@media screen and (max-width: 600px) {
+  .sidebar .col-md-1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  }
+  .history .chart {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+  }
+}
+
+/* Medium size */
+@media (min-width: 700px) and (max-width: 1000px) {
+  img.menu-icon {
+    padding-top: 20px;
+    padding-left: 5px;
+    padding-bottom: 20px;
+  }
+  .history .income h4 {
+    font-size: 20px;
+    margin-top: 40px;
+  }
+  .history .income p {
+    font-size: 15px;
+    margin-top: -20px;
+    margin-bottom: 0px;
+  }
+
+  .history .chart {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 25px;
+  }
+
+  .history .row .recent {
+    margin-left: 25px;
+    margin-top: 20px;
+  }
+}
