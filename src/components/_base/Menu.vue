@@ -33,14 +33,14 @@
                 <b-button variant="primary" v-on:click="addToCart(item)"
                   >Add To Cart</b-button
                 >
-                <b-button variant="success" v-on:click="setProduct(item)"
+                <!-- <b-button variant="success" v-on:click="setProduct(item)"
                   >Update</b-button
                 >
                 <b-button
                   variant="danger"
                   v-on:click="deleteProduct(item.product_id)"
                   >Delete</b-button
-                >
+                > -->
               </div>
               <!-- <b-card
                 v-bind:title="item.product_name"
@@ -69,7 +69,7 @@
           </b-row>
         </div>
         <div class="col-md-4 text-center">
-          <div>
+          <div class="cart">
             <img src="../../assets/img/food-and-restaurant.png" alt="" />
             <h4>Your cart is empty</h4>
             <p>please add some item from the menu</p>
@@ -114,6 +114,8 @@ export default {
     addToCart(data) {
       const setCart = {
         product_id: data.product_id,
+        product_name: data.product_name,
+        product_price: data.product_price,
         qty: 1
         // product_price
       }
