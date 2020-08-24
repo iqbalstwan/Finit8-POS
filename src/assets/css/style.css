@@ -130,18 +130,40 @@
   vertical-align: middle;
   border-style: none;
 }
+/* .sidebar .col-md-7 .b-iconstack {
+  padding-top: 20px;
+  margin-top: 10px;
+  border-style: none;
+} */
 .col-md-7 .col-4 p {
   font-weight: bold;
   text-align: left;
 }
 
-.sidebar .col-md-7 .col .btn-primary {
-  width: 240px;
-  margin-bottom: 5px;
+.sidebar .col-md-7 .bi-cart3 {
+  /* width: 240px; */
+  cursor: pointer;
+  margin-top: -20px;
+  width: 70px;
+  font-size: 30px;
+  font-weight: bold;
+  color: whitesmoke;
+  background: green;
+  border: 1px solid #82de3a;
+  border-radius: 15px;
 }
 
-.sidebar .col-md-7 .col .btn-danger {
-  margin-left: 90px;
+/* sort */
+.sidebar .col-md-7 .col-12 {
+  margin-top: 15px;
+}
+
+.sidebar .col-md-7 .col-12 select {
+  cursor: pointer;
+  background: #57cad5;
+  border-radius: 15px;
+  color: white;
+  border-color: white;
 }
 
 /* ------------------------------------- */

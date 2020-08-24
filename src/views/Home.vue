@@ -9,15 +9,25 @@
             </b-link>
           </div>
           <div class="food">
-            <p>Food Items</p>
+            <p>Finit8</p>
           </div>
           <div class="search">
-            <img src="../assets/img/magnifying-glass.png" />
+            <button
+              type="button"
+              data-toggle="modal"
+              data-target="#myModal"
+              class="btn btn-default navbar-btn"
+            >
+              <img src="../assets/img/magnifying-glass.png" />
+            </button>
+            <b-modal id="myModal" title="BootstrapVue">
+              <p class="my-4">Hello from modal!</p>
+            </b-modal>
           </div>
         </b-col>
         <b-col md="4">
           <p>
-            Cart<span>{{ count }}</span>
+            Cart<span>{{ cart.length }}</span>
           </p>
         </b-col>
       </b-row>
@@ -42,6 +52,18 @@
           </div>
           <div class="col-md-7 menu">
             <b-row>
+              <b-col cols="12">
+                <div>
+                  <select v-model="sort" @change="get_product()">
+                    <option value="">Sort by</option>
+                    <option value="product_name">Name</option>
+                    <option value="category_id">Category</option>
+                    <option value="product_price">Price</option>
+                    <option value="product_created_at DESC">Date</option>
+                  </select>
+                </div>
+              </b-col>
+              <hr />
               <b-col
                 col
                 lg="4"
@@ -49,17 +71,25 @@
                 v-for="(item, index) in products"
                 :key="index"
               >
-                <div
-                  class="count"
-                  @increment="incrementCount()"
-                  v-on:click="addToCart(item)"
-                >
-                  <img src="https://picsum.photos/600/300/?image=25" alt="" />
+                <div class="count" @increment="incrementCount()">
+                  <!-- <b-iconstack font-scale="5" animation="spin">
+                    <b-icon
+                      stacked
+                      icon="camera"
+                      variant="info"
+                      scale="0.75"
+                      shift-v="-0.25"
+                    ></b-icon>
+                    <b-icon
+                      stacked
+                      icon="slash-circle"
+                      variant="danger"
+                    ></b-icon>
+                  </b-iconstack> -->
+                  <img src="../assets/img/redvelvet.png" alt="" />
                   <h4>{{ item.product_name }}</h4>
                   <p>Rp. {{ item.product_price }}</p>
-                  <b-button variant="primary" @click="increment"
-                    >Add To Cart</b-button
-                  >
+                  <b-icon-cart3 v-on:click="addToCart(item)">Add</b-icon-cart3>
                   <!-- <b-button variant="success" v-on:click="setProduct(item)"
                   >Update</b-button
                 >
@@ -127,7 +157,8 @@ export default {
       count: 0,
       cart: [],
       page: 1,
-      limit: 4,
+      limit: 6,
+      sort: '',
       products: [],
       form: {
         category_id: '',
@@ -145,12 +176,8 @@ export default {
     this.get_product()
   },
   methods: {
-    increment() {
-      console.log('clicked')
-      this.$emit('increment', 1)
-    },
     incrementCount(data) {
-      this.count += data
+      this.count += 1
     },
     addToCart(data) {
       const setCart = {
@@ -167,7 +194,7 @@ export default {
     get_product() {
       axios
         .get(
-          `http://127.0.0.1:3001/product?page=${this.page}limit=${this.limit}`
+          `http://127.0.0.1:3001/product?sort=${this.sort}&page=${this.page}&limit=${this.limit}`
           // 'http://127.0.0.1:3001/product'
         )
         .then(response => {
