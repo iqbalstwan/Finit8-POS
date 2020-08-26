@@ -207,15 +207,26 @@
             </b-row>
           </div>
           <div class="col-md-4 text-center">
-            <div class="cart" v-if="count <= 0">
+            <div class="cart" v-if="cart.length <= 0">
               <img src="../assets/img/food-and-restaurant.png" alt="" />
               <h4>Your cart is empty</h4>
               <p>please add some item from the menu</p>
             </div>
-            <div v-else-if="count > 0">
-              <img src="../assets/img/redvelvet.png" alt="" />
-              <h4>Your cart is crazy</h4>
-              <p>please add some item from the menu</p>
+            <div v-else-if="cart.length > 0">
+              <div class="img-cart" v-for="(item, index) in cart" :key="index">
+                <div class="hover">
+                  <img src="../assets/img/bear.png" alt="" />
+                </div>
+                <div class="items">
+                  <p>{{ item.product_name }}</p>
+                  <div class="min">-</div>
+                  <div class="number">1</div>
+                  <div class="plus">+</div>
+                </div>
+                <div class="price">
+                  <p>{{ item.product_price }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -245,7 +256,6 @@ export default {
       page: 1,
       limit: 6,
       totalData: 0,
-      addCart: [],
       showPagination: true,
       sort: '',
       products: [],
@@ -294,9 +304,6 @@ export default {
           this.products = response.data.data
           console.log(this.products)
           this.totalData = response.data.pagination.totalData
-          for (let i = 0; i < this.product; i++) {
-            this.addCart.push({ isAdd: false })
-          }
         })
         .catch(error => {
           console.log(error)
