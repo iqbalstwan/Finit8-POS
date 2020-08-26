@@ -46,8 +46,72 @@
                 <img src="../assets/img/clipboard.png" />
               </a>
             </div>
-            <div type="button" data-toogle="modal" class="add">
-              <img src="../assets/img/add.png" />
+            <div>
+              <b-button
+                v-b-modal.modal-1
+                style="background-color:transparent;border:none"
+                ><img src="../assets/img/add.png"
+              /></b-button>
+              <b-modal id="modal-1" title="Add Product" hide-footer="true">
+                <b-alert :show="alert">{{ isMsg }}</b-alert>
+                <form v-on:submit.prevent="addProduct">
+                  <b-form-group
+                    id="input-group-1"
+                    label="Product Name:"
+                    label-for="input-1"
+                  >
+                    <b-form-input
+                      id="input-1"
+                      v-model="form.product_name"
+                      type="productName"
+                      required
+                      placeholder="Input Product Name"
+                    ></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group
+                    id="input-group-2"
+                    label="Price:"
+                    label-for="input-2"
+                  >
+                    <b-form-input
+                      id="input-2"
+                      v-model="form.product_price"
+                      required
+                      placeholder="Input Price"
+                    ></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group
+                    id="input-group-3"
+                    label="Category Id:"
+                    label-for="input-3"
+                  >
+                    <b-form-input
+                      id="input-3"
+                      v-model="form.category_id"
+                      required
+                      placeholder="Input Category Id"
+                    ></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group
+                    id="input-group-4"
+                    label="Product Status:"
+                    label-for="input-4"
+                  >
+                    <b-form-select
+                      id="input-4"
+                      v-model="form.product_status"
+                      :options="status"
+                      required
+                    ></b-form-select>
+                  </b-form-group>
+                  <button type="submit" class="btn-pink" v-show="!isUpdate">
+                    Add
+                  </button>
+                </form>
+              </b-modal>
             </div>
           </div>
           <div class="col-md-7 menu">
@@ -71,7 +135,7 @@
                 v-for="(item, index) in products"
                 :key="index"
               >
-                <div class="count" @increment="incrementCount()">
+                <div class="counting" @increment="incrementCount()">
                   <!-- <b-iconstack font-scale="5" animation="spin">
                     <b-icon
                       stacked
@@ -86,18 +150,19 @@
                       variant="danger"
                     ></b-icon>
                   </b-iconstack> -->
+                  <div class="select-image" v-if="checkCart(item)">
+                    <img
+                      style="width:40px;height:50px;text-align:center;margin-left:105px;margin-top:60px"
+                      src="../assets/img/tick (1).png"
+                      class="select-icon"
+                      alt=""
+                    />
+                  </div>
                   <img src="../assets/img/redvelvet.png" alt="" />
                   <h4>{{ item.product_name }}</h4>
                   <p>Rp. {{ item.product_price }}</p>
                   <b-icon-cart3 v-on:click="addToCart(item)">Add</b-icon-cart3>
-                  <!-- <b-button variant="success" v-on:click="setProduct(item)"
-                  >Update</b-button
-                >
-                <b-button
-                  variant="danger"
-                  v-on:click="deleteProduct(item.product_id)"
-                  >Delete</b-button
-                > -->
+                  <!-- <p v-if="checkCart(item)">checklist</p> -->
                 </div>
                 <!-- <b-card
                 v-bind:title="item.product_name"
@@ -123,12 +188,33 @@
                 >
               </b-card> -->
               </b-col>
+              <b-col cols="12">
+                <div>
+                  <b-pagination
+                    first-text="First"
+                    last-text="Last"
+                    pills
+                    size="sm"
+                    v-model="page"
+                    :total-rows="totalData"
+                    :per-page="limit"
+                    @change="pageChange"
+                    v-show="showPagination"
+                    align="center"
+                  ></b-pagination>
+                </div>
+              </b-col>
             </b-row>
           </div>
           <div class="col-md-4 text-center">
-            <div class="cart">
+            <div class="cart" v-if="count <= 0">
               <img src="../assets/img/food-and-restaurant.png" alt="" />
               <h4>Your cart is empty</h4>
+              <p>please add some item from the menu</p>
+            </div>
+            <div v-else-if="count > 0">
+              <img src="../assets/img/redvelvet.png" alt="" />
+              <h4>Your cart is crazy</h4>
               <p>please add some item from the menu</p>
             </div>
           </div>
@@ -151,13 +237,16 @@ import axios from 'axios'
 //   // }
 // }
 export default {
-  name: 'axios',
+  name: 'Home',
   data() {
     return {
       count: 0,
       cart: [],
       page: 1,
       limit: 6,
+      totalData: 0,
+      addCart: [],
+      showPagination: true,
       sort: '',
       products: [],
       form: {
@@ -166,6 +255,7 @@ export default {
         product_price: '',
         product_status: ''
       },
+      status: [{ text: 'Select Status', value: null }, '0', '1'],
       alert: false,
       isMsg: '',
       isUpdate: false,
@@ -176,6 +266,9 @@ export default {
     this.get_product()
   },
   methods: {
+    checkCart(data) {
+      return this.cart.some(item => item.product_id === data.product_id)
+    },
     incrementCount(data) {
       this.count += 1
     },
@@ -200,10 +293,35 @@ export default {
         .then(response => {
           this.products = response.data.data
           console.log(this.products)
+          this.totalData = response.data.pagination.totalData
+          for (let i = 0; i < this.product; i++) {
+            this.addCart.push({ isAdd: false })
+          }
         })
         .catch(error => {
           console.log(error)
         })
+    },
+    addProduct() {
+      console.log(this.form)
+      axios
+        .post(
+          // `http://127.0.0.1:3001/product?page=${this.page}limit=${this.limit}`
+          'http://127.0.0.1:3001/product',
+          this.form
+        )
+        .then(response => {
+          this.alert = true
+          this.isMsg = response.data.msg
+          // console.log(this.products)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    pageChange(value) {
+      this.page = value
+      this.get_product()
     }
   }
 }
