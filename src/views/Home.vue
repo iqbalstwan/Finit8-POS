@@ -52,7 +52,7 @@
                 style="background-color:transparent;border:none"
                 ><img src="../assets/img/add.png"
               /></b-button>
-              <b-modal id="modal-1" title="Add Product" :hide-footer="true">
+              <b-modal id="modal-1" title="" :hide-footer="true">
                 <b-alert :show="alert">{{ isMsg }}</b-alert>
                 <form v-on:submit.prevent="addProduct">
                   <b-form-group
@@ -110,6 +110,14 @@
                   <button type="submit" class="btn-pink" v-show="!isUpdate">
                     Add
                   </button>
+                  <button
+                    type="submit"
+                    class="btn-pink"
+                    v-show="isUpdate"
+                    @click="patchProduct()"
+                  >
+                    Update
+                  </button>
                 </form>
               </b-modal>
             </div>
@@ -163,10 +171,9 @@
                   <p>Rp. {{ item.product_price }}</p>
                   <b-icon-cart3 v-on:click="addToCart(item)">Add</b-icon-cart3>
                   <!-- modal Update -->
-                  <b-btn v-b-modal="'modal1'">Modal 1</b-btn>
-                  <b-modal id="modal1" title="Modal 1">
-                    <p class="my-4">yow</p>
-                  </b-modal>
+                  <b-button v-b-modal.modal-1 v-on:click="setProduct(item)"
+                    >Launch demo modal</b-button
+                  >
                   <!-- <p v-if="checkCart(item)">checklist</p> -->
                 </div>
                 <!-- <b-card
@@ -287,8 +294,8 @@ export default {
       count: 0,
       cart: [],
       page: 1,
-      limit: 3,
-      totalData: 0,
+      limit: 6,
+      totalData: 1,
       showPagination: true,
       sort: '',
       products: [],
@@ -405,6 +412,7 @@ export default {
         })
     },
     pageChange(value) {
+      this.$router.push(`?page=${value}`)
       this.page = value
       this.get_product()
     }
