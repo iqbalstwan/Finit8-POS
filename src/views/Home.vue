@@ -52,7 +52,7 @@
                 style="background-color:transparent;border:none"
                 ><img src="../assets/img/add.png"
               /></b-button>
-              <b-modal id="modal-1" title="Add Product" hide-footer="true">
+              <b-modal id="modal-1" title="Add Product" :hide-footer="true">
                 <b-alert :show="alert">{{ isMsg }}</b-alert>
                 <form v-on:submit.prevent="addProduct">
                   <b-form-group
@@ -63,7 +63,7 @@
                     <b-form-input
                       id="input-1"
                       v-model="form.product_name"
-                      type="productName"
+                      type="text"
                       required
                       placeholder="Input Product Name"
                     ></b-form-input>
@@ -162,6 +162,11 @@
                   <h4>{{ item.product_name }}</h4>
                   <p>Rp. {{ item.product_price }}</p>
                   <b-icon-cart3 v-on:click="addToCart(item)">Add</b-icon-cart3>
+                  <!-- modal Update -->
+                  <b-btn v-b-modal="'modal1'">Modal 1</b-btn>
+                  <b-modal id="modal1" title="Modal 1">
+                    <p class="my-4">yow</p>
+                  </b-modal>
                   <!-- <p v-if="checkCart(item)">checklist</p> -->
                 </div>
                 <!-- <b-card
@@ -206,26 +211,54 @@
               </b-col>
             </b-row>
           </div>
-          <div class="col-md-4 text-center">
-            <div class="cart" v-if="cart.length <= 0">
+          <div class="col-md-4">
+            <div class="cart text-center" v-if="cart.length <= 0">
               <img src="../assets/img/food-and-restaurant.png" alt="" />
               <h4>Your cart is empty</h4>
               <p>please add some item from the menu</p>
             </div>
-            <div v-else-if="cart.length > 0">
+            <div class="cartIn" v-else-if="cart.length > 0">
               <div class="img-cart" v-for="(item, index) in cart" :key="index">
                 <div class="hover">
                   <img src="../assets/img/bear.png" alt="" />
                 </div>
                 <div class="items">
                   <p>{{ item.product_name }}</p>
-                  <div class="min">-</div>
-                  <div class="number">1</div>
-                  <div class="plus">+</div>
+                  <b-button variant="success" @click="decrement(item)"
+                    >-</b-button
+                  >
+                  <b-button variant="success">{{ item.qty }}</b-button>
+                  <b-button variant="success" @click="increment(item)"
+                    >+</b-button
+                  >
                 </div>
                 <div class="price">
-                  <p>{{ item.product_price }}</p>
+                  <b-button
+                    style="margin-bottom:10px"
+                    class="remove-cart"
+                    variant="danger"
+                    @click="removeCart(item)"
+                    >Remove</b-button
+                  >
+                  <p style="margin-top:15px">
+                    Rp.{{ item.product_price * item.qty }}
+                  </p>
                 </div>
+              </div>
+              <div class="total">
+                <div>
+                  <h4>Total :</h4>
+                  <p>*Belum termasuk ppn</p>
+                </div>
+                <div>
+                  <h4>105</h4>
+                </div>
+              </div>
+              <div class="total-box">
+                <div class="checkout">
+                  Checkout
+                </div>
+                <div class="cancel">Cancel</div>
               </div>
             </div>
           </div>
@@ -254,11 +287,13 @@ export default {
       count: 0,
       cart: [],
       page: 1,
-      limit: 6,
+      limit: 3,
       totalData: 0,
       showPagination: true,
       sort: '',
       products: [],
+      qty: 1,
+      subTotal: '',
       form: {
         category_id: '',
         product_name: '',
@@ -279,9 +314,26 @@ export default {
     checkCart(data) {
       return this.cart.some(item => item.product_id === data.product_id)
     },
+    removeCart(data) {
+      return this.cart.splice(
+        this.cart.findIndex(item => item.product_id === data.product_id),
+        1
+      )
+    },
     incrementCount(data) {
       this.count += 1
     },
+    increment(data) {
+      data.qty += 1
+    },
+    decrement(data) {
+      if (data.qty === 1) {
+        alert('Please,Quantity not allowed')
+      } else {
+        data.qty -= 1
+      }
+    },
+    total(data) {},
     addToCart(data) {
       const setCart = {
         product_id: data.product_id,
@@ -321,6 +373,32 @@ export default {
           this.alert = true
           this.isMsg = response.data.msg
           // console.log(this.products)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    setProduct(data) {
+      this.form = {
+        product_name: data.product_name,
+        category_id: data.category_id,
+        product_price: data.product_price,
+        product_status: data.product_status
+      }
+      this.isUpdate = true
+      this.product_id = data.product_id
+      // console.log(data.product_id)
+    },
+    patchProduct() {
+      // console.log(this.product_id)
+      // console.log(this.form)
+      this.isUpdate = false
+      axios
+        .patch(`http://127.0.0.1:3001/product/${this.product_id}`, this.form)
+        .then(response => {
+          console.log(response)
+          this.alert = true
+          this.isMsg = response.data.msg
         })
         .catch(error => {
           console.log(error)

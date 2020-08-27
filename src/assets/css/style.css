@@ -200,6 +200,43 @@
 
 /* ------------------------------------- */
 /* cart bottom */
+.sidebar .col-md-4 .cartIn .img-cart {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin-top: 10px;
+}
+.sidebar .col-md-4 .cartIn .total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.sidebar .col-md-4 .cartIn .img-cart img {
+  width: 110px;
+  height: 110px;
+}
+.sidebar .col-md-4 .cartIn .items .btn {
+  margin: 2px;
+}
+
+.col-md-4 .total-box .checkout {
+  margin-top: 10px;
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  background: #57cad5;
+}
+.col-md-4 .total-box .cancel {
+  margin-top: 10px;
+  background: #f24f8a;
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+}
+
 .sidebar .col-md-4 {
   background: white;
   border: 1px solid #cecece;
