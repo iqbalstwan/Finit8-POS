@@ -6,16 +6,16 @@
         <div class="col-md-1 text-center">
           <div class="fork">
             <a href="home.html">
-              <img src="img/fork.png" />
+              <img src="../../img/fork.png" />
             </a>
           </div>
           <div class="clipboard">
             <a href="history.html">
-              <img src="img/clipboard.png" />
+              <img src="../../assets/img/clipboard.png" />
             </a>
           </div>
           <div class="add">
-            <img src="img/add.png" />
+            <img src="../../assetsimg/add.png" />
           </div>
         </div>
         <div class="col-md-11 history">

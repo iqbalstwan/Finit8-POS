@@ -4,9 +4,9 @@
       <div class="row text-center">
         <div class="col-md-1">
           <div class="menu">
-            <a href="index.html">
-              <img src="img/menu.png" class="menu-icon" />
-            </a>
+            <router-link to="/">
+              <img src="../../assets/img/menu.png" class="menu-icon" />
+            </router-link>
           </div>
         </div>
         <div class="col-md-11">

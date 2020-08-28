@@ -86,7 +86,7 @@ img.menu-icon {
   flex-wrap: wrap;
 }
 
-main .history {
+.col-md-11 .row {
   background: rgba(190, 195, 202, 0.3);
 }
 .history .income {
@@ -148,7 +148,6 @@ main .history {
 .history .chart {
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-left: 50px;
 }
 
 /* ------------------------------------------ */

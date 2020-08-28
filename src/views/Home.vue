@@ -12,17 +12,25 @@
             <p>Finit8</p>
           </div>
           <div class="search">
-            <button
-              type="button"
-              data-toggle="modal"
-              data-target="#myModal"
-              class="btn btn-default navbar-btn"
-            >
-              <img src="../assets/img/magnifying-glass.png" />
-            </button>
-            <b-modal id="myModal" title="BootstrapVue">
-              <p class="my-4">Hello from modal!</p>
-            </b-modal>
+            <b-form>
+              <input
+                style="border-color:#57cad5"
+                placeholder="Search"
+                type="search"
+                v-model="search"
+                @change="searchProduct()"
+              />
+              <!-- </input> -->
+              <button
+                type="reset"
+                style="background:transparent;background:#57cad5"
+              >
+                <img
+                  style="width:20px;text-color:white"
+                  src="../assets/img/magnifying-glass.png"
+                />
+              </button>
+            </b-form>
           </div>
         </b-col>
         <b-col md="4">
@@ -42,19 +50,19 @@
               </a>
             </div>
             <div class="clipboard">
-              <a href="history.html">
+              <router-link to="/history">
                 <img src="../assets/img/clipboard.png" />
-              </a>
+              </router-link>
             </div>
             <div>
               <b-button
-                v-b-modal.modal-1
+                @click="showModal"
                 style="background-color:transparent;border:none"
                 ><img src="../assets/img/add.png"
               /></b-button>
-              <b-modal id="modal-1" title="" :hide-footer="true">
-                <b-alert :show="alert">{{ isMsg }}</b-alert>
+              <b-modal ref="my-modal" title="" :hide-footer="true">
                 <form v-on:submit.prevent="addProduct">
+                  <b-alert :show="alert">{{ isMsg }}</b-alert>
                   <b-form-group
                     id="input-group-1"
                     label="Product Name:"
@@ -111,7 +119,7 @@
                     Add
                   </button>
                   <button
-                    type="submit"
+                    type="button"
                     class="btn-pink"
                     v-show="isUpdate"
                     @click="patchProduct()"
@@ -144,20 +152,6 @@
                 :key="index"
               >
                 <div class="counting" @increment="incrementCount()">
-                  <!-- <b-iconstack font-scale="5" animation="spin">
-                    <b-icon
-                      stacked
-                      icon="camera"
-                      variant="info"
-                      scale="0.75"
-                      shift-v="-0.25"
-                    ></b-icon>
-                    <b-icon
-                      stacked
-                      icon="slash-circle"
-                      variant="danger"
-                    ></b-icon>
-                  </b-iconstack> -->
                   <div class="select-image" v-if="checkCart(item)">
                     <img
                       style="width:40px;height:50px;text-align:center;margin-left:105px;margin-top:60px"
@@ -172,33 +166,15 @@
                   <b-icon-cart3 v-on:click="addToCart(item)">Add</b-icon-cart3>
                   <!-- modal Update -->
                   <b-button v-b-modal.modal-1 v-on:click="setProduct(item)"
-                    >Launch demo modal</b-button
+                    >Update</b-button
+                  >
+                  <b-icon-x-diamond-fill
+                    @click="deleteProduct(item)"
+                    style="color:red;cursor:pointer"
+                    >Delete</b-icon-x-diamond-fill
                   >
                   <!-- <p v-if="checkCart(item)">checklist</p> -->
                 </div>
-                <!-- <b-card
-                v-bind:title="item.product_name"
-                img-src="https://picsum.photos/600/300/?image=25"
-                img-alt="Image"
-                img-top
-                tag="article"
-                style="max-width: 20rem;"
-                class="mb-2"
-              >
-                <b-card-text>{{ item.product_price }}</b-card-text>
-
-                <b-button variant="primary" v-on:click="addToCart(item)"
-                  >Add To Cart</b-button
-                >
-                <b-button variant="success" v-on:click="setProduct(item)"
-                  >Update</b-button
-                >
-                <b-button
-                  variant="danger"
-                  v-on:click="deleteProduct(item.product_id)"
-                  >Delete</b-button
-                >
-              </b-card> -->
               </b-col>
               <b-col cols="12">
                 <div>
@@ -234,7 +210,7 @@
                   <b-button variant="success" @click="decrement(item)"
                     >-</b-button
                   >
-                  <b-button variant="success">{{ item.qty }}</b-button>
+                  <b-button variant="outline-success">{{ item.qty }}</b-button>
                   <b-button variant="success" @click="increment(item)"
                     >+</b-button
                   >
@@ -294,7 +270,7 @@ export default {
       count: 0,
       cart: [],
       page: 1,
-      limit: 6,
+      limit: 10,
       totalData: 1,
       showPagination: true,
       sort: '',
@@ -309,6 +285,7 @@ export default {
       },
       status: [{ text: 'Select Status', value: null }, '0', '1'],
       alert: false,
+      isSearch: false,
       isMsg: '',
       isUpdate: false,
       product_id: ''
@@ -326,6 +303,24 @@ export default {
         this.cart.findIndex(item => item.product_id === data.product_id),
         1
       )
+    },
+    showModal() {
+      this.form = {
+        category_id: '',
+        product_name: '',
+        product_price: '',
+        product_status: ''
+      }
+      this.isUpdate = false
+      this.$refs['my-modal'].show()
+    },
+    hideModal() {
+      this.$refs['my-modal'].hide()
+    },
+    toggleModal() {
+      // We pass the ID of the button that we want to return focus to
+      // when the modal has hidden
+      this.$refs['my-modal'].toggle('#toggle-btn')
     },
     incrementCount(data) {
       this.count += 1
@@ -368,6 +363,22 @@ export default {
           console.log(error)
         })
     },
+    searchProduct() {
+      console.log(this.search)
+      if (this.search === '') {
+        this.get_product()
+      } else {
+        axios
+          .get(`http://127.0.0.1:3001/product?search=${this.search}`)
+          .then(response => {
+            this.products = response.data.data
+            console.log(this.products)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    },
     addProduct() {
       console.log(this.form)
       axios
@@ -393,6 +404,7 @@ export default {
         product_status: data.product_status
       }
       this.isUpdate = true
+      this.$refs['my-modal'].show()
       this.product_id = data.product_id
       // console.log(data.product_id)
     },
@@ -400,12 +412,30 @@ export default {
       // console.log(this.product_id)
       // console.log(this.form)
       this.isUpdate = false
+
       axios
         .patch(`http://127.0.0.1:3001/product/${this.product_id}`, this.form)
         .then(response => {
+          this.$refs['my-modal'].hide()
+          this.get_product()
           console.log(response)
           this.alert = true
           this.isMsg = response.data.msg
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    deleteProduct(data) {
+      // console.log(this.product_id)
+      // console.log(this.form)
+      axios
+        .delete(`http://127.0.0.1:3001/product/${data.product_id}`, this.form)
+        .then(response => {
+          this.get_product()
+          this.alert = true
+          this.isMsg = response.data.msg
+          console.log(response)
         })
         .catch(error => {
           console.log(error)
