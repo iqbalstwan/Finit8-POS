@@ -4,9 +4,9 @@
       <b-row class="text-center">
         <b-col md="8">
           <div class="menu-icon">
-            <b-link href="index.html">
+            <router-link to="/">
               <img src="../assets/img/menu.png" />
-            </b-link>
+            </router-link>
           </div>
           <div class="food">
             <p>Finit8</p>
@@ -14,28 +14,23 @@
           <div class="search">
             <b-form>
               <input
-                style="border-color:#57cad5"
-                placeholder="Search"
+                style="border-color:white"
+                placeholder="Search..."
                 type="search"
                 v-model="search"
                 @change="searchProduct()"
               />
               <!-- </input> -->
-              <button
-                type="reset"
-                style="background:transparent;background:#57cad5"
-              >
-                <img
-                  style="width:20px;text-color:white"
-                  src="../assets/img/magnifying-glass.png"
-                />
+              <button type="reset" style="background:transparent;background:white;border:none">
+                <img style="width:20px;text-color:white" src="../assets/img/magnifying-glass.png" />
               </button>
             </b-form>
           </div>
         </b-col>
         <b-col md="4">
           <p>
-            Cart<span>{{ cart.length }}</span>
+            Cart
+            <span>{{ cart.length }}</span>
           </p>
         </b-col>
       </b-row>
@@ -43,11 +38,9 @@
     <main>
       <div class="container-fluid sidebar">
         <div class="row">
-          <div class="col-md-1 text-center">
+          <b-col cols md="1 text-center">
             <div class="fork">
-              <a href="home.html">
-                <img src="../assets/img/fork.png" />
-              </a>
+              <img src="../assets/img/fork.png" />
             </div>
             <div class="clipboard">
               <router-link to="/history">
@@ -57,17 +50,15 @@
             <div>
               <b-button
                 @click="showModal"
+                class="add"
                 style="background-color:transparent;border:none"
-                ><img src="../assets/img/add.png"
-              /></b-button>
-              <b-modal ref="my-modal" title="" :hide-footer="true">
+              >
+                <img src="../assets/img/add.png" />
+              </b-button>
+              <b-modal ref="my-modal" title :hide-footer="true">
                 <form v-on:submit.prevent="addProduct">
-                  <b-alert :show="alert">{{ isMsg }}</b-alert>
-                  <b-form-group
-                    id="input-group-1"
-                    label="Product Name:"
-                    label-for="input-1"
-                  >
+                  <!-- <b-alert :show="alert">{{ isMsg }}</b-alert> -->
+                  <b-form-group id="input-group-1" label="Product Name:" label-for="input-1">
                     <b-form-input
                       id="input-1"
                       v-model="form.product_name"
@@ -77,11 +68,7 @@
                     ></b-form-input>
                   </b-form-group>
 
-                  <b-form-group
-                    id="input-group-2"
-                    label="Price:"
-                    label-for="input-2"
-                  >
+                  <b-form-group id="input-group-2" label="Price:" label-for="input-2">
                     <b-form-input
                       id="input-2"
                       v-model="form.product_price"
@@ -90,11 +77,7 @@
                     ></b-form-input>
                   </b-form-group>
 
-                  <b-form-group
-                    id="input-group-3"
-                    label="Category Id:"
-                    label-for="input-3"
-                  >
+                  <b-form-group id="input-group-3" label="Category Id:" label-for="input-3">
                     <b-form-input
                       id="input-3"
                       v-model="form.category_id"
@@ -103,11 +86,7 @@
                     ></b-form-input>
                   </b-form-group>
 
-                  <b-form-group
-                    id="input-group-4"
-                    label="Product Status:"
-                    label-for="input-4"
-                  >
+                  <b-form-group id="input-group-4" label="Product Status:" label-for="input-4">
                     <b-form-select
                       id="input-4"
                       v-model="form.product_status"
@@ -115,27 +94,23 @@
                       required
                     ></b-form-select>
                   </b-form-group>
-                  <button type="submit" class="btn-pink" v-show="!isUpdate">
-                    Add
-                  </button>
+                  <button type="submit" class="btn-pink" v-show="!isUpdate">Add</button>
                   <button
                     type="button"
                     class="btn-pink"
                     v-show="isUpdate"
                     @click="patchProduct()"
-                  >
-                    Update
-                  </button>
+                  >Update</button>
                 </form>
               </b-modal>
             </div>
-          </div>
-          <div class="col-md-7 menu">
+          </b-col>
+          <b-col cols md="7" class="menu">
             <b-row>
               <b-col cols="12">
                 <div>
                   <select v-model="sort" @change="get_product()">
-                    <option value="">Sort by</option>
+                    <option value>Sort by</option>
                     <option value="product_name">Name</option>
                     <option value="category_id">Category</option>
                     <option value="product_price">Price</option>
@@ -144,35 +119,41 @@
                 </div>
               </b-col>
               <hr />
-              <b-col
-                col
-                lg="4"
-                sm="12"
-                v-for="(item, index) in products"
-                :key="index"
-              >
+              <b-col col lg="4" md="6" sm="12" v-for="(item, index) in products" :key="index">
                 <div class="counting" @increment="incrementCount()">
                   <div class="select-image" v-if="checkCart(item)">
                     <img
                       style="width:40px;height:50px;text-align:center;margin-left:105px;margin-top:60px"
                       src="../assets/img/tick (1).png"
                       class="select-icon"
-                      alt=""
+                      alt
                     />
                   </div>
-                  <img src="../assets/img/redvelvet.png" alt="" />
-                  <h4>{{ item.product_name }}</h4>
-                  <p>Rp. {{ item.product_price }}</p>
-                  <b-icon-cart3 v-on:click="addToCart(item)">Add</b-icon-cart3>
+                  <img src="../assets/img/redvelvet.png" alt />
+                  <h4 style="font-weight:bold">{{ item.product_name }}</h4>
+                  <p style="color:grey">Rp. {{ item.product_price }}</p>
+                  <b-button
+                    v-on:click="addToCart(item)"
+                    style="width:70px;margin-right:10px;background:green;border:white"
+                  >
+                    <img
+                      style="width:30px;height:45px;margin-top:-25px"
+                      src="../assets/img/cart.png"
+                    />
+                  </b-button>
+                  <!-- <div class="button-bot"> -->
                   <!-- modal Update -->
-                  <b-button v-b-modal.modal-1 v-on:click="setProduct(item)"
-                    >Update</b-button
-                  >
-                  <b-icon-x-diamond-fill
+                  <b-button
+                    v-b-modal.modal-1
+                    variant="outline-primary"
+                    v-on:click="setProduct(item)"
+                  >Update</b-button>
+                  <b-button
+                    variant="outline-danger"
                     @click="deleteProduct(item)"
-                    style="color:red;cursor:pointer"
-                    >Delete</b-icon-x-diamond-fill
-                  >
+                    style="color:red;cursor:pointer;margin-left:10px"
+                  >Delete</b-button>
+                  <!-- </div> -->
                   <!-- <p v-if="checkCart(item)">checklist</p> -->
                 </div>
               </b-col>
@@ -193,27 +174,23 @@
                 </div>
               </b-col>
             </b-row>
-          </div>
-          <div class="col-md-4">
+          </b-col>
+          <b-col cols md="4">
             <div class="cart text-center" v-if="cart.length <= 0">
-              <img src="../assets/img/food-and-restaurant.png" alt="" />
+              <img src="../assets/img/food-and-restaurant.png" alt />
               <h4>Your cart is empty</h4>
               <p>please add some item from the menu</p>
             </div>
             <div class="cartIn" v-else-if="cart.length > 0">
               <div class="img-cart" v-for="(item, index) in cart" :key="index">
                 <div class="hover">
-                  <img src="../assets/img/bear.png" alt="" />
+                  <img src="../assets/img/bear.png" alt />
                 </div>
                 <div class="items">
-                  <p>{{ item.product_name }}</p>
-                  <b-button variant="success" @click="decrement(item)"
-                    >-</b-button
-                  >
-                  <b-button variant="outline-success">{{ item.qty }}</b-button>
-                  <b-button variant="success" @click="increment(item)"
-                    >+</b-button
-                  >
+                  <p style="color:grey">{{ item.product_name }}</p>
+                  <b-button variant="success" @click="decrement(item)">-</b-button>
+                  <b-button variant="outline-success">{{ item.order_qty }}</b-button>
+                  <b-button variant="success" @click="increment(item)">+</b-button>
                 </div>
                 <div class="price">
                   <b-button
@@ -221,11 +198,8 @@
                     class="remove-cart"
                     variant="danger"
                     @click="removeCart(item)"
-                    >Remove</b-button
-                  >
-                  <p style="margin-top:15px">
-                    Rp.{{ item.product_price * item.qty }}
-                  </p>
+                  >Remove</b-button>
+                  <p style="margin-top:15px;color:grey">Rp.{{ item.product_price * item.order_qty }}</p>
                 </div>
               </div>
               <div class="total">
@@ -234,17 +208,66 @@
                   <p>*Belum termasuk ppn</p>
                 </div>
                 <div>
-                  <h4>105</h4>
+                  <h4>Rp. {{totally}}</h4>
                 </div>
               </div>
+              <!-- @click="postOrder()" -->
               <div class="total-box">
                 <div class="checkout">
-                  Checkout
+                  <b-button
+                    type="button"
+                    class="btn-primary"
+                    v-b-modal.modal-checkout
+                    @click="postOrder()"
+                  >Checkout</b-button>
+                  <b-modal
+                    id="modal-checkout"
+                    title="Checkout"
+                    class="check"
+                    hide-footer
+                    no-close-on-backdrop
+                  >
+                    <div class="line1">
+                      <div class="first">
+                        <div class="cashier">Cashier: Pevita Pearce</div>
+                        <div class="cashier">Receipt no: # {{ modalCheckOut.Invoices }}</div>
+                      </div>
+                      <div
+                        class="second"
+                        v-for="(item, index) in cart"
+                        :key="index"
+                        style="display:flex;justify-content:space-between;margin-top:10px"
+                      >
+                        <div>
+                          <p>{{item.product_name}} x{{item.order_qty}}</p>
+                        </div>
+                        <div>
+                          <p>Rp. {{item.product_price}}</p>
+                        </div>
+                      </div>
+                      <div
+                        class="third"
+                        style="display:flex;justify-content:space-between;margin-top:40px"
+                      >
+                        <div>
+                          <p>Ppn 10%</p>
+                        </div>
+                        <div>
+                          <p>Rp. {{totally * 10/100}}</p>
+                        </div>
+                      </div>
+                      <div class="fourth" style="text-align:right">
+                        <div>
+                          <p>Total : Rp. {{totally+(totally * 10/100)}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </b-modal>
                 </div>
                 <div class="cancel">Cancel</div>
               </div>
             </div>
-          </div>
+          </b-col>
         </div>
       </div>
     </main>
@@ -270,13 +293,13 @@ export default {
       count: 0,
       cart: [],
       page: 1,
-      limit: 10,
+      limit: 6,
       totalData: 1,
       showPagination: true,
       sort: '',
       products: [],
       qty: 1,
-      subTotal: '',
+      modalCheckOut: {},
       form: {
         category_id: '',
         product_name: '',
@@ -285,6 +308,7 @@ export default {
       },
       status: [{ text: 'Select Status', value: null }, '0', '1'],
       alert: false,
+      search: '',
       isSearch: false,
       isMsg: '',
       isUpdate: false,
@@ -326,13 +350,15 @@ export default {
       this.count += 1
     },
     increment(data) {
-      data.qty += 1
+      data.order_qty += 1
+      data.total_price = data.product_price * data.order_qty
     },
     decrement(data) {
-      if (data.qty === 1) {
+      if (data.order_qty === 1) {
         alert('Please,Quantity not allowed')
       } else {
-        data.qty -= 1
+        data.order_qty -= 1
+        data.total_price = data.product_price * data.order_qty
       }
     },
     total(data) {},
@@ -341,12 +367,24 @@ export default {
         product_id: data.product_id,
         product_name: data.product_name,
         product_price: data.product_price,
-        qty: 1
+        order_qty: 1,
+        total_price: data.product_price
         // product_price
       }
-      // spread operator
-      this.cart = [...this.cart, setCart]
-      console.log(this.cart)
+      const fixedData = [...this.cart, setCart]
+      const addedItem = fixedData.find(
+        item => item.product_id === data.product_id
+      )
+      const existItem = this.cart.find(
+        item => item.product_id === data.product_id
+      )
+      if (existItem) {
+        addedItem.order_qty += 1
+      } else {
+        // spread operator
+        this.cart = [...this.cart, setCart]
+      }
+      // console.log(this.cart)
     },
     get_product() {
       axios
@@ -388,8 +426,10 @@ export default {
           this.form
         )
         .then(response => {
+          this.$refs['my-modal'].hide()
           this.alert = true
           this.isMsg = response.data.msg
+          alert(this.isMsg)
           // console.log(this.products)
         })
         .catch(error => {
@@ -421,6 +461,7 @@ export default {
           console.log(response)
           this.alert = true
           this.isMsg = response.data.msg
+          alert(this.isMsg)
         })
         .catch(error => {
           console.log(error)
@@ -435,7 +476,26 @@ export default {
           this.get_product()
           this.alert = true
           this.isMsg = response.data.msg
+          alert(this.isMsg)
           console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    postOrder(data) {
+      const setCart = {
+        orders: [...this.cart]
+      }
+      console.log(setCart)
+      axios
+        .post('http://127.0.0.1:3001/order', setCart)
+        .then(response => {
+          this.modalCheckOut = response.data.data
+          console.log(response)
+          // this.alert = true
+          // this.invoice = response.data.data
+          // this.isMsg = response.data.msg
         })
         .catch(error => {
           console.log(error)
@@ -445,6 +505,14 @@ export default {
       this.$router.push(`?page=${value}`)
       this.page = value
       this.get_product()
+    }
+  },
+  computed: {
+    totally() {
+      const totals = this.cart.map(value => {
+        return value.order_qty * value.product_price
+      })
+      return totals.reduce((a, b) => a + b)
     }
   }
 }

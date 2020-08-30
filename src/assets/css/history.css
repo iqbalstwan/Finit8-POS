@@ -11,7 +11,7 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-.col-md-1 {
+.col-lg-1 {
   position: relative;
   width: 100%;
   min-height: 1px;
@@ -19,7 +19,7 @@
   padding-left: 10px;
   background: white;
 }
-.col-md-11 {
+.history {
   position: relative;
   width: 100%;
   background: white;
@@ -37,7 +37,7 @@ img.menu-icon {
 }
 
 /* history */
-.col-md-11 p {
+.col-lg-11 p {
   font-weight: bold;
   font-size: 30px;
   padding-top: 10px;
@@ -53,7 +53,7 @@ img.menu-icon {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-.sidebar .col-md-1 {
+.sidebar .col-lg-1 {
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px;
@@ -65,15 +65,15 @@ img.menu-icon {
 .sidebar img {
   width: 35px;
 }
-.col-md-1 .fork {
+.col-lg-1 .fork {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.col-md-1 .clipboard {
+.col-lg-1 .clipboard {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.col-md-1 .add {
+.col-lg-1 .add {
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -86,8 +86,13 @@ img.menu-icon {
   flex-wrap: wrap;
 }
 
-.col-md-11 .row {
+.col-lg-11 .row {
   background: rgba(190, 195, 202, 0.3);
+}
+.col-lg-11 .revenue .row {
+  margin-top: 20px;
+  height: 500px;
+  background: white;
 }
 .history .income {
   display: flex;
@@ -145,22 +150,32 @@ img.menu-icon {
 
 /* ------------------------------------- */
 /* row2 chart */
-.history .chart {
-  margin-top: 20px;
-  margin-bottom: 20px;
+.history .revenue {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
-
+.history .revenue h4 {
+  font-weight: bold;
+  font-size: 25px;
+}
+.history .revenue .btn {
+  margin-top: 5px;
+  font-size: 10px;
+  font-weight: bold;
+  color: black;
+  background: #cecece;
+  border-radius: 10px;
+}
 /* ------------------------------------------ */
 /* row3 recent order */
-.history .row .recent {
-  background-color: white;
-  margin-left: 50px;
-  margin-right: 50px;
+.history .recent {
   margin-top: 20px;
 }
 .history .recent {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .history .recent h4 {
@@ -181,30 +196,41 @@ img.menu-icon {
   border-radius: 10px;
 }
 
-.history .order {
-  text-align: center;
+.history .under-row {
   display: flex;
   justify-content: space-between;
+  text-align: center;
 }
-.history .order p {
+.history .under-row p {
   margin-bottom: -15px;
   font-size: 15px;
 }
-.history .order h6 {
+.history .under-row h6 {
   margin-top: -10px;
   color: grey;
   font-size: 12px;
+}
+.history .under-row th {
+  font-size: 1rem;
+  line-height: 20px;
+  letter-spacing: 0.1em;
+  background: lightgrey;
 }
 
 /* RESPONSIVE */
 /* small size */
 @media screen and (max-width: 600px) {
-  .sidebar .col-md-1 {
+  .sidebar .col-lg-1 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     background: white;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  }
+  .history .income {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-around; */
   }
   .history .chart {
     margin-top: 20px;
@@ -230,11 +256,11 @@ img.menu-icon {
     margin-bottom: 0px;
   }
 
-  .history .chart {
+  /* .history .chart {
     margin-top: 20px;
     margin-bottom: 20px;
     margin-left: 25px;
-  }
+  } */
 
   .history .row .recent {
     margin-left: 25px;
