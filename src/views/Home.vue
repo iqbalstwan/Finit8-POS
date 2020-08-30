@@ -218,6 +218,7 @@
                     type="button"
                     class="btn-primary"
                     v-b-modal.modal-checkout
+                    style="border:none"
                     @click="postOrder()"
                   >Checkout</b-button>
                   <b-modal
@@ -261,10 +262,23 @@
                           <p>Total : Rp. {{totally+(totally * 10/100)}}</p>
                         </div>
                       </div>
+                      <b-button
+                        class="print"
+                        style="width:460px;background: #f24f8a;border:none;font-size: 25px;margin-top:20px"
+                      >Print</b-button>
+                      <div style="text-align:center;margin-top:10px">OR</div>
+                      <b-button
+                        class="email"
+                        style="width:460px;background: #57cad5;border:none;font-size: 25px;margin-top:20px"
+                      >Send Email</b-button>
                     </div>
                   </b-modal>
                 </div>
-                <div class="cancel">Cancel</div>
+                <b-button
+                  class="cancel"
+                  @click="cart = []"
+                  style="width:450px;background: #f24f8a;border:none;font-size: 25px;margin-top:10px;font-weight:bold"
+                >Cancel</b-button>
               </div>
             </div>
           </b-col>
@@ -361,7 +375,7 @@ export default {
         data.total_price = data.product_price * data.order_qty
       }
     },
-    total(data) {},
+
     addToCart(data) {
       const setCart = {
         product_id: data.product_id,
