@@ -410,6 +410,7 @@ export default {
           this.products = response.data.data
           console.log(this.products)
           this.totalData = response.data.pagination.totalData
+          // this.$router.push(`?sort=${this.sort}&page=${this.page}`)
         })
         .catch(error => {
           console.log(error)
@@ -424,6 +425,7 @@ export default {
           .get(`http://127.0.0.1:3001/product?search=${this.search}`)
           .then(response => {
             this.products = response.data.data
+            this.$router.push(`?produk=${this.search}`)
             console.log(this.products)
           })
           .catch(error => {
