@@ -1,12 +1,23 @@
 <template>
   <div>
     <b-container fluid class="home">
-      <b-row class="text-center">
+      <b-row class="header">
         <b-col md="8">
           <div class="menu-icon">
-            <router-link to="/">
-              <img src="../assets/img/menu.png" />
-            </router-link>
+            <b-button
+              style="background-color:transparent;border:none"
+              v-b-toggle.sidebar-1
+              ><img src="../assets/img/menu.png"
+            /></b-button>
+            <b-sidebar
+              id="sidebar-1"
+              title="Hello..."
+              shadow
+              bg-variant="warning"
+            >
+              <h1>Admin</h1>
+              <h1>Setting</h1>
+            </b-sidebar>
           </div>
           <div class="food">
             <p>Finit8</p>
@@ -21,13 +32,19 @@
                 @change="searchProduct()"
               />
               <!-- </input> -->
-              <button type="reset" style="background:transparent;background:white;border:none">
-                <img style="width:20px;text-color:white" src="../assets/img/magnifying-glass.png" />
+              <button
+                type="reset"
+                style="background:transparent;background:white;border:none"
+              >
+                <img
+                  style="text-color:white"
+                  src="../assets/img/magnifying-glass.png"
+                />
               </button>
             </b-form>
           </div>
         </b-col>
-        <b-col md="4">
+        <b-col md="4" class="cart text-center">
           <p>
             Cart
             <span>{{ cart.length }}</span>
@@ -40,7 +57,7 @@
         <div class="row">
           <b-col cols md="1 text-center">
             <div class="fork">
-              <img src="../assets/img/fork.png" />
+              <img @click="handleLogout" src="../assets/img/fork.png" />
             </div>
             <div class="clipboard">
               <router-link to="/history">
@@ -58,7 +75,11 @@
               <b-modal ref="my-modal" title :hide-footer="true">
                 <form v-on:submit.prevent="addProduct">
                   <!-- <b-alert :show="alert">{{ isMsg }}</b-alert> -->
-                  <b-form-group id="input-group-1" label="Product Name:" label-for="input-1">
+                  <b-form-group
+                    id="input-group-1"
+                    label="Product Name:"
+                    label-for="input-1"
+                  >
                     <b-form-input
                       id="input-1"
                       v-model="form.product_name"
@@ -68,7 +89,11 @@
                     ></b-form-input>
                   </b-form-group>
 
-                  <b-form-group id="input-group-2" label="Price:" label-for="input-2">
+                  <b-form-group
+                    id="input-group-2"
+                    label="Price:"
+                    label-for="input-2"
+                  >
                     <b-form-input
                       id="input-2"
                       v-model="form.product_price"
@@ -77,7 +102,11 @@
                     ></b-form-input>
                   </b-form-group>
 
-                  <b-form-group id="input-group-3" label="Category Id:" label-for="input-3">
+                  <b-form-group
+                    id="input-group-3"
+                    label="Category Id:"
+                    label-for="input-3"
+                  >
                     <b-form-input
                       id="input-3"
                       v-model="form.category_id"
@@ -86,7 +115,11 @@
                     ></b-form-input>
                   </b-form-group>
 
-                  <b-form-group id="input-group-4" label="Product Status:" label-for="input-4">
+                  <b-form-group
+                    id="input-group-4"
+                    label="Product Status:"
+                    label-for="input-4"
+                  >
                     <b-form-select
                       id="input-4"
                       v-model="form.product_status"
@@ -94,13 +127,22 @@
                       required
                     ></b-form-select>
                   </b-form-group>
-                  <button type="submit" class="btn-pink" v-show="!isUpdate">Add</button>
+                  <button
+                    type="submit"
+                    class="btn-pink"
+                    v-show="!isUpdate"
+                    @click="makeToast('success')"
+                  >
+                    Add
+                  </button>
                   <button
                     type="button"
                     class="btn-pink"
                     v-show="isUpdate"
-                    @click="patchProduct()"
-                  >Update</button>
+                    @click="patchProduct(), makeToast('primary')"
+                  >
+                    Update
+                  </button>
                 </form>
               </b-modal>
             </div>
@@ -119,7 +161,14 @@
                 </div>
               </b-col>
               <hr />
-              <b-col col lg="4" md="6" sm="12" v-for="(item, index) in products" :key="index">
+              <b-col
+                col
+                lg="4"
+                md="6"
+                sm="12"
+                v-for="(item, index) in products"
+                :key="index"
+              >
                 <div class="counting" @increment="incrementCount()">
                   <div class="select-image" v-if="checkCart(item)">
                     <img
@@ -129,7 +178,7 @@
                       alt
                     />
                   </div>
-                  <img src="../assets/img/redvelvet.png" alt />
+                  <img :src="'http://127.0.0.1:3001/' + item.product_img" />
                   <h4 style="font-weight:bold">{{ item.product_name }}</h4>
                   <p style="color:grey">Rp. {{ item.product_price }}</p>
                   <b-button
@@ -147,12 +196,14 @@
                     v-b-modal.modal-1
                     variant="outline-primary"
                     v-on:click="setProduct(item)"
-                  >Update</b-button>
+                    >Update</b-button
+                  >
                   <b-button
                     variant="outline-danger"
                     @click="deleteProduct(item)"
                     style="color:red;cursor:pointer;margin-left:10px"
-                  >Delete</b-button>
+                    >Delete</b-button
+                  >
                   <!-- </div> -->
                   <!-- <p v-if="checkCart(item)">checklist</p> -->
                 </div>
@@ -184,13 +235,19 @@
             <div class="cartIn" v-else-if="cart.length > 0">
               <div class="img-cart" v-for="(item, index) in cart" :key="index">
                 <div class="hover">
-                  <img src="../assets/img/bear.png" alt />
+                  <img :src="'http://127.0.0.1:3001/' + item.product_img" alt />
                 </div>
                 <div class="items">
                   <p style="color:grey">{{ item.product_name }}</p>
-                  <b-button variant="success" @click="decrement(item)">-</b-button>
-                  <b-button variant="outline-success">{{ item.order_qty }}</b-button>
-                  <b-button variant="success" @click="increment(item)">+</b-button>
+                  <b-button variant="success" @click="decrement(item)"
+                    >-</b-button
+                  >
+                  <b-button variant="outline-success">{{
+                    item.order_qty
+                  }}</b-button>
+                  <b-button variant="success" @click="increment(item)"
+                    >+</b-button
+                  >
                 </div>
                 <div class="price">
                   <b-button
@@ -198,8 +255,11 @@
                     class="remove-cart"
                     variant="danger"
                     @click="removeCart(item)"
-                  >Remove</b-button>
-                  <p style="margin-top:15px;color:grey">Rp.{{ item.product_price * item.order_qty }}</p>
+                    >Remove</b-button
+                  >
+                  <p style="margin-top:15px;color:grey">
+                    Rp.{{ item.product_price * item.order_qty }}
+                  </p>
                 </div>
               </div>
               <div class="total">
@@ -208,7 +268,7 @@
                   <p>*Belum termasuk ppn</p>
                 </div>
                 <div>
-                  <h4>Rp. {{totally}}</h4>
+                  <h4>Rp. {{ totally }}</h4>
                 </div>
               </div>
               <!-- @click="postOrder()" -->
@@ -220,7 +280,8 @@
                     v-b-modal.modal-checkout
                     style="border:none"
                     @click="postOrder()"
-                  >Checkout</b-button>
+                    >Checkout</b-button
+                  >
                   <b-modal
                     id="modal-checkout"
                     title="Checkout"
@@ -231,7 +292,9 @@
                     <div class="line1">
                       <div class="first">
                         <div class="cashier">Cashier: Pevita Pearce</div>
-                        <div class="cashier">Receipt no: # {{ modalCheckOut.Invoices }}</div>
+                        <div class="cashier">
+                          Receipt no: # {{ modalCheckOut.Invoices }}
+                        </div>
                       </div>
                       <div
                         class="second"
@@ -240,10 +303,10 @@
                         style="display:flex;justify-content:space-between;margin-top:10px"
                       >
                         <div>
-                          <p>{{item.product_name}} x{{item.order_qty}}</p>
+                          <p>{{ item.product_name }} x{{ item.order_qty }}</p>
                         </div>
                         <div>
-                          <p>Rp. {{item.product_price}}</p>
+                          <p>Rp. {{ item.product_price }}</p>
                         </div>
                       </div>
                       <div
@@ -254,23 +317,27 @@
                           <p>Ppn 10%</p>
                         </div>
                         <div>
-                          <p>Rp. {{totally * 10/100}}</p>
+                          <p>Rp. {{ (totally * 10) / 100 }}</p>
                         </div>
                       </div>
                       <div class="fourth" style="text-align:right">
                         <div>
-                          <p>Total : Rp. {{totally+(totally * 10/100)}}</p>
+                          <p>
+                            Total : Rp. {{ totally + (totally * 10) / 100 }}
+                          </p>
                         </div>
                       </div>
                       <b-button
                         class="print"
                         style="width:460px;background: #f24f8a;border:none;font-size: 25px;margin-top:20px"
-                      >Print</b-button>
+                        >Print</b-button
+                      >
                       <div style="text-align:center;margin-top:10px">OR</div>
                       <b-button
                         class="email"
                         style="width:460px;background: #57cad5;border:none;font-size: 25px;margin-top:20px"
-                      >Send Email</b-button>
+                        >Send Email</b-button
+                      >
                     </div>
                   </b-modal>
                 </div>
@@ -278,7 +345,8 @@
                   class="cancel"
                   @click="cart = []"
                   style="width:450px;background: #f24f8a;border:none;font-size: 25px;margin-top:10px;font-weight:bold"
-                >Cancel</b-button>
+                  >Cancel</b-button
+                >
               </div>
             </div>
           </b-col>
@@ -289,29 +357,26 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import axios from 'axios'
 // import Header from '../components/_base/Header'
 // import Menu from '../components/_base/Menu'
 
-// export default {
-//   name: 'Home'
-//   // components: {
-//   //   Header,
-//   //   Menu
-//   // }
-// }
 export default {
   name: 'Home',
+  // component: {
+  //   Header
+  // },
   data() {
     return {
       count: 0,
       cart: [],
-      page: 1,
-      limit: 6,
-      totalData: 1,
+      // page: 1,
+      // limit: 6,
+      // totalData: 1,
       showPagination: true,
-      sort: '',
-      products: [],
+      // sort: '',
+      // products: [],
       qty: 1,
       modalCheckOut: {},
       form: {
@@ -333,6 +398,12 @@ export default {
     this.get_product()
   },
   methods: {
+    ...mapActions({ get_product: 'getProducts' }),
+    ...mapMutations(['setPage']),
+    ...mapActions({ handleLogout: 'logout' }),
+    // handleLogout() {
+    //   console.log('logout clicked')
+    // },
     checkCart(data) {
       return this.cart.some(item => item.product_id === data.product_id)
     },
@@ -400,22 +471,22 @@ export default {
       }
       // console.log(this.cart)
     },
-    get_product() {
-      axios
-        .get(
-          `http://127.0.0.1:3001/product?sort=${this.sort}&page=${this.page}&limit=${this.limit}`
-          // 'http://127.0.0.1:3001/product'
-        )
-        .then(response => {
-          this.products = response.data.data
-          console.log(this.products)
-          this.totalData = response.data.pagination.totalData
-          // this.$router.push(`?sort=${this.sort}&page=${this.page}`)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
+    // get_product() {
+    //   axios
+    //     .get(
+    //       `http://127.0.0.1:3001/product?sort=${this.sort}&page=${this.page}&limit=${this.limit}`
+    //       // 'http://127.0.0.1:3001/product'
+    //     )
+    //     .then(response => {
+    //       this.products = response.data.data
+    //       console.log(this.products)
+    //       this.totalData = response.data.pagination.totalData
+    //       // this.$router.push(`?sort=${this.sort}&page=${this.page}`)
+    //     })
+    //     .catch(error => {
+    //       console.log(error)
+    //     })
+    // },
     searchProduct() {
       console.log(this.search)
       if (this.search === '') {
@@ -445,7 +516,7 @@ export default {
           this.$refs['my-modal'].hide()
           this.alert = true
           this.isMsg = response.data.msg
-          alert(this.isMsg)
+          // alert(this.isMsg)
           // console.log(this.products)
         })
         .catch(error => {
@@ -477,7 +548,7 @@ export default {
           console.log(response)
           this.alert = true
           this.isMsg = response.data.msg
-          alert(this.isMsg)
+          // alert(this.isMsg)
         })
         .catch(error => {
           console.log(error)
@@ -519,11 +590,25 @@ export default {
     },
     pageChange(value) {
       this.$router.push(`?page=${value}`)
-      this.page = value
+      this.setPage(value)
       this.get_product()
+    },
+    makeToast(variant = null) {
+      this.$bvToast.toast('Patch Done ', {
+        title: 'Update ',
+        variant: variant,
+        solid: true
+      })
     }
   },
   computed: {
+    ...mapGetters({
+      limit: 'getLimit',
+      page: 'getPage',
+      sort: 'getSort',
+      totalData: 'getTotalData',
+      products: 'getProduct'
+    }),
     totally() {
       const totals = this.cart.map(value => {
         return value.order_qty * value.product_price

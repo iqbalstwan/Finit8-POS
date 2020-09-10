@@ -1,0 +1,49 @@
+.login {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 16px;
+  height: 100vh;
+  width: 100%;
+  font-family: 'airbnb', sans-serif;
+  /* background: linear-gradient(rgba(42, 38, 61, 0.8), rgba(42, 38, 61, 0.8)); */
+  background: linear-gradient(to bottom right, #f24f8a, aqua);
+}
+.login h1 {
+  color: white;
+}
+
+.login .form-email {
+  margin-bottom: 20px;
+  border-color: pink;
+  outline: none;
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #fff;
+  transition: 0.5s;
+}
+
+.login .form-password {
+  margin-bottom: 10px;
+  border-color: pink;
+  outline: none;
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #fff;
+  transition: 0.5s;
+}
+.login-box .user-email input:focus ~ label,
+.login-box .user-password input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: #03e9f4;
+  font-size: 12px;
+}
+
+.login .btn {
+  align-items: center;
+  margin-left: 60px;
+  border: none;
+  background: #f24f8a;
+}

@@ -1,22 +1,33 @@
 <template>
-  <b-container fluid class="home">
-    <b-row class="text-center">
-      <b-col md="8">
-        <div class="menu-icon">
-          <b-link href="index.html">
-            <img src="../../assets/img/menu.png" />
-          </b-link>
-        </div>
-        <div class="food">
-          <p>Food Items</p>
-        </div>
-        <div class="search">
-          <img src="../../assets/img/magnifying-glass.png" />
-        </div>
-      </b-col>
-      <b-col md="4">
-        <p>Cart<span>0</span></p>
-      </b-col>
-    </b-row>
-  </b-container>
+  <body>
+    <div class="menu-icon">
+      <router-link to="/">
+        <img src="../../assets/img/menu.png" />
+      </router-link>
+    </div>
+    <div class="food">
+      <p>Finit8</p>
+    </div>
+    <div class="search">
+      <b-form>
+        <input
+          style="border-color:white"
+          placeholder="Search..."
+          type="search"
+          v-model="search"
+          @change="searchProduct()"
+        />
+        <!-- </input> -->
+        <button
+          type="reset"
+          style="background:transparent;background:white;border:none"
+        >
+          <img
+            style="width:20px;text-color:white"
+            src="../../assets/img/magnifying-glass.png"
+          />
+        </button>
+      </b-form>
+    </div>
+  </body>
 </template>
