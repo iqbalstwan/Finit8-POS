@@ -28,8 +28,8 @@
                 style="border-color:white"
                 placeholder="Search..."
                 type="search"
-                v-model="search"
-                @change="searchProduct()"
+                v-model="find"
+                @change="searchProduct"
               />
               <!-- </input> -->
               <button
@@ -101,7 +101,13 @@
                       placeholder="Input Price"
                     ></b-form-input>
                   </b-form-group>
-
+                  <b-form-group
+                    id="input-group-2"
+                    label="Price:"
+                    label-for="input-2"
+                  >
+                  </b-form-group>
+                  <input type="file" @change="handleFile" />
                   <b-form-group
                     id="input-group-3"
                     label="Category Id:"
@@ -151,7 +157,7 @@
             <b-row>
               <b-col cols="12">
                 <div>
-                  <select v-model="sort" @change="get_product()">
+                  <select v-model="defaultSort" @change="handleSort">
                     <option value>Sort by</option>
                     <option value="product_name">Name</option>
                     <option value="category_id">Category</option>
@@ -215,7 +221,7 @@
                     last-text="Last"
                     pills
                     size="sm"
-                    v-model="page"
+                    v-model="currentPage"
                     :total-rows="totalData"
                     :per-page="limit"
                     @change="pageChange"
@@ -293,7 +299,7 @@
                       <div class="first">
                         <div class="cashier">Cashier: Pevita Pearce</div>
                         <div class="cashier">
-                          Receipt no: # {{ modalCheckOut.Invoices }}
+                          Receipt no: # {{ modalCheckOut }}
                         </div>
                       </div>
                       <div
@@ -343,7 +349,7 @@
                 </div>
                 <b-button
                   class="cancel"
-                  @click="cart = []"
+                  @click="clearCart()"
                   style="width:450px;background: #f24f8a;border:none;font-size: 25px;margin-top:10px;font-weight:bold"
                   >Cancel</b-button
                 >
@@ -358,7 +364,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import axios from 'axios'
+// import axios from 'axios'
 // import Header from '../components/_base/Header'
 // import Menu from '../components/_base/Menu'
 
@@ -370,8 +376,10 @@ export default {
   data() {
     return {
       count: 0,
-      cart: [],
-      // page: 1,
+      // cart: [],
+      currentPage: 1,
+      defaultSort: '',
+      find: '',
       // limit: 6,
       // totalData: 1,
       showPagination: true,
@@ -383,36 +391,181 @@ export default {
         category_id: '',
         product_name: '',
         product_price: '',
+        product_img: {},
         product_status: ''
       },
       status: [{ text: 'Select Status', value: null }, '0', '1'],
       alert: false,
-      search: '',
+      // search: '',
       isSearch: false,
       isMsg: '',
-      isUpdate: false,
-      product_id: ''
+      isUpdate: false
+      // product_id: ''
     }
   },
   created() {
     this.get_product()
   },
+  computed: {
+    ...mapGetters({
+      limit: 'getLimit',
+      page: 'getPage',
+      sort: 'getSort',
+      totalData: 'getTotalData',
+      products: 'getProduct',
+      cart: 'getCart',
+      // modalCheckOut: 'getCheckOut',
+      search: 'getSearch'
+    }),
+    totally() {
+      const totals = this.cart.map(value => {
+        return value.order_qty * value.product_price
+      })
+      return totals.reduce((a, b) => a + b)
+    },
+    incrementCount() {
+      return this.cart.length
+    }
+  },
   methods: {
-    ...mapActions({ get_product: 'getProducts' }),
-    ...mapMutations(['setPage']),
-    ...mapActions({ handleLogout: 'logout' }),
-    // handleLogout() {
-    //   console.log('logout clicked')
-    // },
+    ...mapActions([
+      'addProducts',
+      'updateProducts',
+      'deleteProducts',
+      'postOrders',
+      'searching'
+    ]),
+    ...mapMutations([
+      'setPage',
+      'addToCart',
+      'increment',
+      'decrement',
+      'setSearch',
+      'setSort',
+      // 'checkCart',
+      'removeCart',
+      'clearCart'
+      // 'modalCheckOut'
+    ]),
+    ...mapActions({ get_product: 'getProducts', handleLogout: 'logout' }),
+
+    handleFile(event) {
+      this.form.product_img = event.target.files[0]
+      console.log(event.target.files)
+    },
+    addProduct() {
+      const data = new FormData()
+      data.append('category_id', this.form.category_id)
+      data.append('product_name', this.form.product_name)
+      data.append('product_price', this.form.product_price)
+      data.append('product_img', this.form.product_img)
+      data.append('product_status', this.form.product_status)
+
+      this.$refs['my-modal'].hide()
+      this.addProducts(data)
+        .then(response => {
+          this.alert = true
+          this.isMsg = response.msg
+          this.get_product()
+        })
+        .catch(error => {
+          this.alert = true
+          this.isMsg = error.data.msg
+        })
+      // .then(response => {})
+      // .catch(error => {})
+      //   console.log(this.form)
+    },
+    setProduct(data) {
+      this.form = {
+        category_id: data.category_id,
+        product_name: data.product_name,
+        product_price: data.product_price,
+        product_img: data.product_img,
+        product_status: data.product_status
+      }
+      this.isUpdate = true
+      this.$refs['my-modal'].show()
+      this.product_id = data.product_id
+      // console.log(data.product_id)
+    },
+    patchProduct() {
+      const data = new FormData()
+      data.append('category_id', this.form.category_id)
+      data.append('product_name', this.form.product_name)
+      data.append('product_price', this.form.product_price)
+      data.append('product_img', this.form.product_img)
+      data.append('product_status', this.form.product_status)
+
+      const setData = {
+        product_id: this.product_id,
+        form: data
+      }
+      console.log(setData)
+      this.$refs['my-modal'].hide()
+      this.isUpdate = false
+      this.updateProducts(setData)
+        .then(response => {
+          this.alert = true
+          this.isMsg = response.msg
+          this.get_product()
+        })
+        .catch(error => {
+          this.alert = true
+          this.isMsg = error.data.msg
+        })
+    },
+    setDelete(data) {
+      this.form = {
+        category_id: data.category_id,
+        product_name: data.product_name,
+        product_price: data.product_price,
+        product_img: data.product_img,
+        product_status: data.product_status
+      }
+      this.product_id = data.product_id
+    },
+    deleteProduct(data) {
+      const setData = {
+        product_id: data.product_id,
+        form: data
+      }
+      // // console.log(setData)
+      this.deleteProducts(setData)
+        .then(response => {
+          this.alert = true
+          this.isMsg = response.msg
+          this.get_product()
+        })
+        .catch(error => {
+          this.alert = true
+          this.isMsg = error.data.msg
+        })
+    },
+    postOrder() {
+      const setCart = {
+        orders: [...this.cart]
+      }
+      console.log(setCart)
+      this.postOrders(setCart)
+        .then(response => {
+          this.modalCheckOut = response.data.Invoices
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+
     checkCart(data) {
       return this.cart.some(item => item.product_id === data.product_id)
     },
-    removeCart(data) {
-      return this.cart.splice(
-        this.cart.findIndex(item => item.product_id === data.product_id),
-        1
-      )
-    },
+    // removeCart(data) {
+    //   return this.cart.splice(
+    //     this.cart.findIndex(item => item.product_id === data.product_id),
+    //     1
+    //   )
+    // },
     showModal() {
       this.form = {
         category_id: '',
@@ -431,46 +584,46 @@ export default {
       // when the modal has hidden
       this.$refs['my-modal'].toggle('#toggle-btn')
     },
-    incrementCount(data) {
-      this.count += 1
-    },
-    increment(data) {
-      data.order_qty += 1
-      data.total_price = data.product_price * data.order_qty
-    },
-    decrement(data) {
-      if (data.order_qty === 1) {
-        alert('Please,Quantity not allowed')
-      } else {
-        data.order_qty -= 1
-        data.total_price = data.product_price * data.order_qty
-      }
-    },
+    // incrementCount(data) {
+    //   this.count += 1
+    // },
+    // increment(data) {
+    //   data.order_qty += 1
+    //   data.total_price = data.product_price * data.order_qty
+    // },
+    // decrement(data) {
+    //   if (data.order_qty === 1) {
+    //     alert('Please,Quantity not allowed')
+    //   } else {
+    //     data.order_qty -= 1
+    //     data.total_price = data.product_price * data.order_qty
+    //   }
+    // },
 
-    addToCart(data) {
-      const setCart = {
-        product_id: data.product_id,
-        product_name: data.product_name,
-        product_price: data.product_price,
-        order_qty: 1,
-        total_price: data.product_price
-        // product_price
-      }
-      const fixedData = [...this.cart, setCart]
-      const addedItem = fixedData.find(
-        item => item.product_id === data.product_id
-      )
-      const existItem = this.cart.find(
-        item => item.product_id === data.product_id
-      )
-      if (existItem) {
-        addedItem.order_qty += 1
-      } else {
-        // spread operator
-        this.cart = [...this.cart, setCart]
-      }
-      // console.log(this.cart)
-    },
+    // addToCart(data) {
+    //   const setCart = {
+    //     product_id: data.product_id,
+    //     product_name: data.product_name,
+    //     product_price: data.product_price,
+    //     order_qty: 1,
+    //     total_price: data.product_price
+    //     // product_price
+    //   }
+    //   const fixedData = [...this.cart, setCart]
+    //   const addedItem = fixedData.find(
+    //     item => item.product_id === data.product_id
+    //   )
+    //   const existItem = this.cart.find(
+    //     item => item.product_id === data.product_id
+    //   )
+    //   if (existItem) {
+    //     addedItem.order_qty += 1
+    //   } else {
+    //     // spread operator
+    //     this.cart = [...this.cart, setCart]
+    //   }
+    //   // console.log(this.cart)
+    // },
     // get_product() {
     //   axios
     //     .get(
@@ -481,139 +634,130 @@ export default {
     //       this.products = response.data.data
     //       console.log(this.products)
     //       this.totalData = response.data.pagination.totalData
-    //       // this.$router.push(`?sort=${this.sort}&page=${this.page}`)
+    //       this.$router.push(`?sort=${this.sort}&page=${this.page}`)
+    //     })
+    //     .catch(error => {
+    //       console.log(error)
+    //     })
+    // },
+    // searchProduct() {
+    //   console.log(this.search)
+    //   if (this.search === '') {
+    //     this.get_product()
+    //   } else {
+    //     axios
+    //       .get(`http://127.0.0.1:3001/product?search=${this.search}`)
+    //       .then(response => {
+    //         this.products = response.data.data
+    //         this.$router.push(`?produk=${this.search}`)
+    //         console.log(this.products)
+    //       })
+    //       .catch(error => {
+    //         console.log(error)
+    //       })
+    //   }
+    // },
+    // addProduct() {
+    //   console.log(this.form)
+    //   axios
+    //     .post(
+    //       // `http://127.0.0.1:3001/product?page=${this.page}limit=${this.limit}`
+    //       'http://127.0.0.1:3001/product',
+    //       this.form
+    //     )
+    //     .then(response => {
+    //       this.$refs['my-modal'].hide()
+    //       this.alert = true
+    //       this.isMsg = response.data.msg
+    //       // alert(this.isMsg)
+    //       // console.log(this.products)
+    //     })
+    //     .catch(error => {
+    //       console.log(error)
+    //     })
+    // },
+
+    // patchProduct() {
+    //   // console.log(this.product_id)
+    //   // console.log(this.form)
+    //   this.isUpdate = false
+
+    //   axios
+    //     .patch(`http://127.0.0.1:3001/product/${this.product_id}`, this.form)
+    //     .then(response => {
+    //       this.$refs['my-modal'].hide()
+    //       this.get_product()
+    //       console.log(response)
+    //       this.alert = true
+    //       this.isMsg = response.data.msg
+    //       // alert(this.isMsg)
+    //     })
+    //     .catch(error => {
+    //       console.log(error)
+    //     })
+    // },
+    // deleteProduct(data) {
+    //   // console.log(this.product_id)
+    //   // console.log(this.form)
+    //   axios
+    //     .delete(`http://127.0.0.1:3001/product/${data.product_id}`, this.form)
+    //     .then(response => {
+    //       this.get_product()
+    //       this.alert = true
+    //       this.isMsg = response.data.msg
+    //       alert(this.isMsg)
+    //       console.log(response)
+    //     })
+    //     .catch(error => {
+    //       console.log(error)
+    //     })
+    // },
+    // postOrder(data) {
+    //   const setCart = {
+    //     orders: [...this.cart]
+    //   }
+    //   console.log(setCart)
+    //   axios
+    //     .post('http://127.0.0.1:3001/order', setCart)
+    //     .then(response => {
+    //       this.modalCheckOut = response.data.data
+    //       console.log(response)
+    //       // this.alert = true
+    //       // this.invoice = response.data.data
+    //       // this.isMsg = response.data.msg
     //     })
     //     .catch(error => {
     //       console.log(error)
     //     })
     // },
     searchProduct() {
-      console.log(this.search)
-      if (this.search === '') {
+      console.log(this.find)
+      if (this.find === '') {
         this.get_product()
       } else {
-        axios
-          .get(`http://127.0.0.1:3001/product?search=${this.search}`)
-          .then(response => {
-            this.products = response.data.data
-            this.$router.push(`?produk=${this.search}`)
-            console.log(this.products)
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        this.$router.push(`?product=${this.find}`)
+        this.setSearch(this.find)
+        this.searching()
       }
     },
-    addProduct() {
-      console.log(this.form)
-      axios
-        .post(
-          // `http://127.0.0.1:3001/product?page=${this.page}limit=${this.limit}`
-          'http://127.0.0.1:3001/product',
-          this.form
-        )
-        .then(response => {
-          this.$refs['my-modal'].hide()
-          this.alert = true
-          this.isMsg = response.data.msg
-          // alert(this.isMsg)
-          // console.log(this.products)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    handleSort(event) {
+      console.log(event.target.value)
+      this.$router.push(`?sort=${event.target.value}`)
+      this.setSort(event.target.value)
+      // console.log(value)
+      this.get_product()
     },
-    setProduct(data) {
-      this.form = {
-        product_name: data.product_name,
-        category_id: data.category_id,
-        product_price: data.product_price,
-        product_status: data.product_status
-      }
-      this.isUpdate = true
-      this.$refs['my-modal'].show()
-      this.product_id = data.product_id
-      // console.log(data.product_id)
-    },
-    patchProduct() {
-      // console.log(this.product_id)
-      // console.log(this.form)
-      this.isUpdate = false
-
-      axios
-        .patch(`http://127.0.0.1:3001/product/${this.product_id}`, this.form)
-        .then(response => {
-          this.$refs['my-modal'].hide()
-          this.get_product()
-          console.log(response)
-          this.alert = true
-          this.isMsg = response.data.msg
-          // alert(this.isMsg)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    deleteProduct(data) {
-      // console.log(this.product_id)
-      // console.log(this.form)
-      axios
-        .delete(`http://127.0.0.1:3001/product/${data.product_id}`, this.form)
-        .then(response => {
-          this.get_product()
-          this.alert = true
-          this.isMsg = response.data.msg
-          alert(this.isMsg)
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    postOrder(data) {
-      const setCart = {
-        orders: [...this.cart]
-      }
-      console.log(setCart)
-      axios
-        .post('http://127.0.0.1:3001/order', setCart)
-        .then(response => {
-          this.modalCheckOut = response.data.data
-          console.log(response)
-          // this.alert = true
-          // this.invoice = response.data.data
-          // this.isMsg = response.data.msg
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    pageChange(value) {
-      this.$router.push(`?page=${value}`)
-      this.setPage(value)
+    pageChange(event) {
+      this.$router.push(`?page=${event}`)
+      this.setPage(event)
       this.get_product()
     },
     makeToast(variant = null) {
-      this.$bvToast.toast('Patch Done ', {
-        title: 'Update ',
+      this.$bvToast.toast('Well Done ', {
+        // title: 'Message ',
         variant: variant,
         solid: true
       })
-    }
-  },
-  computed: {
-    ...mapGetters({
-      limit: 'getLimit',
-      page: 'getPage',
-      sort: 'getSort',
-      totalData: 'getTotalData',
-      products: 'getProduct'
-    }),
-    totally() {
-      const totals = this.cart.map(value => {
-        return value.order_qty * value.product_price
-      })
-      return totals.reduce((a, b) => a + b)
     }
   }
 }

@@ -61,7 +61,8 @@ export default {
           this.$router.push('/')
         })
         .catch(error => {
-          console.log(error.data.msg)
+          //   console.log('error')
+          alert(error.response.data.msg)
         })
     },
     onReset() {

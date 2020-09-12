@@ -5,16 +5,84 @@ export default {
     page: 1,
     limit: 6,
     sort: '',
+    search: '',
     products: [],
-    totalData: 1
+    totalData: 1,
+    product_id: '',
+    cart: []
   },
   mutations: {
+    addToCart(state, payload) {
+      console.log(payload)
+      const setCart = {
+        product_id: payload.product_id,
+        product_name: payload.product_name,
+        product_price: payload.product_price,
+        product_img: payload.product_img,
+        order_qty: 1,
+        total_price: payload.product_price
+        // product_price
+      }
+      const fixedData = [...state.cart, setCart]
+      const addedItem = fixedData.find(
+        item => item.product_id === payload.product_id
+      )
+      const existItem = state.cart.find(
+        item => item.product_id === payload.product_id
+      )
+      if (existItem) {
+        addedItem.order_qty += 1
+      } else {
+        // spread operator
+        state.cart = [...state.cart, setCart]
+      }
+      // console.log(this.cart)
+    },
+    // checkCart(state, payload) {
+    //   return state.cart.some(item => item.product_id === payload.product_id)
+    // },
+    removeCart(state, payload) {
+      return state.cart.splice(
+        state.cart.findIndex(item => item.product_id === payload.product_id),
+        1
+      )
+    },
+    clearCart(state, payload) {
+      state.cart = []
+    },
+    increment(state, payload) {
+      payload.order_qty += 1
+      payload.total_price = payload.product_price * payload.order_qty
+    },
+    decrement(state, payload) {
+      if (payload.order_qty === 1) {
+        alert('Please,Quantity not allowed')
+      } else {
+        payload.order_qty -= 1
+        payload.total_price = payload.product_price * payload.order_qty
+      }
+    },
+    setSearch(state, payload) {
+      console.log('storeeeee')
+      console.log(payload)
+      state.search = payload
+      state.products = payload.data
+    },
     setProduct(state, payload) {
+      //   console.log('storeeeee')
+      //   console.log(payload)
       state.products = payload.data
       state.totalData = payload.pagination.totalData
     },
     setPage(state, payload) {
       state.page = payload
+      //   console.log(payload)
+      //   console.log(state.page)
+    },
+    setSort(state, payload) {
+      state.sort = payload
+      console.log('storeeeee====')
+      console.log(payload)
     }
   },
   actions: {
@@ -26,15 +94,15 @@ export default {
         )
         .then(response => {
           context.commit('setProduct', response.data)
-          //   context.state.products = response.data.data
-          //   context.state.totalData = response.data.pagination.totalData
+          // context.state.products = response.data.data
+          // context.state.totalData = response.data.pagination.totalData
           // this.$router.push(`?sort=${this.sort}&page=${this.page}`)
         })
         .catch(error => {
           console.log(error)
         })
     },
-    addProduct(context, payload) {
+    addProducts(context, payload) {
       //   console.log(payload)
       return new Promise((resolve, reject) => {
         axios
@@ -46,6 +114,80 @@ export default {
           .catch(error => {
             reject(error.response)
             console.log(error.response)
+          })
+      })
+    },
+    updateProducts(context, payload) {
+      console.log(payload.product_id)
+      console.log(payload.form)
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(
+            `http://127.0.0.1:3001/product/${payload.product_id}`,
+            payload.form
+          )
+          .then(response => {
+            console.log(response)
+            resolve(response.data)
+          })
+          .catch(error => {
+            reject(error.response)
+            console.log(error.response)
+          })
+      })
+    },
+    deleteProducts(context, payload) {
+      console.log(payload.product_id)
+      console.log(payload)
+      //   console.log(payload)
+      return new Promise((resolve, reject) => {
+        axios
+          .delete(
+            `http://127.0.0.1:3001/product/${payload.product_id}`,
+            payload.form
+          )
+          .then(response => {
+            console.log(response)
+            resolve(response.data)
+          })
+          .catch(error => {
+            console.log(error.response)
+            reject(error.response)
+          })
+      })
+    },
+    postOrders(context, payload) {
+      console.log(payload)
+      return new Promise((resolve, reject) => {
+        axios
+          .post('http://127.0.0.1:3001/order', payload)
+          .then(response => {
+            resolve(response.data)
+            // this.invoice = response.data.data
+            // this.isMsg = response.data.msg
+          })
+          .catch(error => {
+            reject(error.response)
+          })
+      })
+    },
+    searching(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            `http://127.0.0.1:3001/product?search=${context.state.search}`,
+            payload
+          )
+          .then(response => {
+            console.log(response)
+            context.commit('setProduct', response.data)
+            resolve(response.data)
+            // state.products = response.data.data
+            // this.$router.push(`?produk=${this.search}`)
+            // console.log(this.products)
+          })
+          .catch(error => {
+            reject(error.response)
           })
       })
     }
@@ -65,6 +207,12 @@ export default {
     },
     getProduct(state) {
       return state.products
+    },
+    getCart(state) {
+      return state.cart
+    },
+    getSearch(state) {
+      return state.search
     }
   }
 }

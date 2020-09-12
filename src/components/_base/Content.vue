@@ -6,11 +6,11 @@
           <table class="table table-sm" id="recent">
             <thead class="”thead-light”">
               <tr>
-                <th style="text-align: center">Category ID</th>
-                <th style="text-align: center">Name</th>
+                <th style="text-align: center">Email</th>
+                <th style="text-align: center">Username</th>
+                <th style="text-align: center">Password</th>
+                <th style="text-align: center">Role</th>
                 <th style="text-align: center">Status</th>
-                <th style="text-align: center">Created</th>
-                <th style="text-align: center">Updated</th>
                 <th style="text-align: center">
                   Button
                   <b-button
@@ -18,36 +18,46 @@
                     class="addCategory"
                     style="background-color:transparent;border:none;height:25px"
                   >
-                    <img
-                      style="height:15px;margin-top:-13px"
-                      src="../../assets/img/add.png"
-                    />
                   </b-button>
 
                   <b-modal ref="my-modal" title :hide-footer="true">
-                    <form v-on:submit.prevent="addCategory">
+                    <form v-on:submit.prevent="addUser">
                       <b-form-group
                         id="input-group-1"
-                        label="Category Name:"
+                        label="Email:"
                         label-for="input-1"
                       >
                         <b-form-input
                           id="input-1"
-                          v-model="form.category_name"
+                          v-model="form.user_email"
                           type="text"
                           required
-                          placeholder="Input Category Name"
+                          placeholder="Input Email"
+                        ></b-form-input>
+                      </b-form-group>
+
+                      <b-form-group
+                        id="input-group-1"
+                        label="Password:"
+                        label-for="input-1"
+                      >
+                        <b-form-input
+                          id="input-1"
+                          v-model="form.user_password"
+                          type="text"
+                          required
+                          placeholder="Input Password"
                         ></b-form-input>
                       </b-form-group>
 
                       <b-form-group
                         id="input-group-4"
-                        label="Category Status:"
+                        label="User Status:"
                         label-for="input-4"
                       >
                         <b-form-select
                           id="input-4"
-                          v-model="form.category_status"
+                          v-model="form.user_status"
                           :options="status"
                           required
                         ></b-form-select>
@@ -64,7 +74,7 @@
                         type="button"
                         class="btn-pink"
                         v-show="isUpdate"
-                        @click="patchCategory(), makeToast('primary')"
+                        @click="patchUser(), makeToast('primary')"
                       >
                         Update
                       </button>
@@ -73,25 +83,25 @@
                 </th>
               </tr>
             </thead>
-            <tr v-for="(item, index) in categorys" :key="index">
-              <td>{{ item.category_id }}</td>
-              <td>{{ item.category_name }}</td>
-              <td>{{ item.category_status }}</td>
-              <td>{{ item.category_created_at }}</td>
-              <td>{{ item.category_update_at }}</td>
+            <tr v-for="(item, index) in allUsers" :key="index">
+              <td>{{ item.user_email }}</td>
+              <td>{{ item.user_name }}</td>
+              <td>{{ item.user_password }}</td>
+              <td>{{ item.user_role }}</td>
+              <td>{{ item.user_status }}</td>
               <td>
                 <b-button
                   v-b-modal.modal-1
                   variant="outline-primary"
-                  v-on:click="setCategory(item)"
+                  v-on:click="setUser(item)"
                   >Update</b-button
                 >
-                <b-button
+                <!-- <b-button
                   variant="outline-danger"
-                  @click="deleteCategory(item)"
+                  @click="deleteUser(item)"
                   style="color:red;cursor:pointer;margin-left:10px"
                   >Delete</b-button
-                >
+                > -->
               </td>
             </tr>
           </table>
@@ -102,98 +112,77 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 export default {
-  name: 'HistContent',
+  name: 'Admin',
   data() {
     return {
       form: {
-        category_name: '',
-        category_status: '',
-        category_created_at: '',
-        category_update_at: ''
+        user_email: '',
+        user_password: '',
+        user_name: '',
+        user_role: '',
+        user_status: ''
       },
       status: [{ text: 'Select Status', value: null }, '0', '1'],
-      // category_id: '',
       isMsg: '',
       isUpdate: false
     }
   },
   created() {
-    this.get_category()
+    this.getAllUsers()
   },
   computed: {
     ...mapGetters({
-      limit: 'getLimitCategory',
-      page: 'getPageCategory',
-      sort: 'getSortCategory',
-      totalData: 'getTotalDataCategory',
-      categorys: 'getCategorys'
+      allUsers: 'getUsers'
     })
   },
   methods: {
-    ...mapActions(['addCategorys', 'updateCategorys', 'deleteCategorys']),
-    ...mapMutations(['setCategory', 'setPage']),
-    ...mapActions({ get_category: 'getAllCategory', handleLogout: 'logout' }),
+    ...mapActions(['getAllUsers', 'updateUsers', 'deleteUsers']),
+    ...mapMutations(['setAllUsers']),
+    ...mapActions({ handleLogout: 'logout' }),
 
-    addCategory() {
-      this.$refs['my-modal'].hide()
-      this.addCategorys(this.form)
-        .then(response => {
-          console.log(response)
-          this.alert = true
-          this.isMsg = response.msg
-          this.get_category()
-        })
-        .catch(error => {
-          console.log(this.form)
-          this.alert = true
-          this.isMsg = error.data.msg
-        })
-      // .then(response => {})
-      // .catch(error => {})
-      //   console.log(this.form)
-    },
-    setCategory(data) {
+    setUser(data) {
       this.form = {
-        category_name: data.category_name,
-        category_status: data.category_status
+        user_email: data.user_email,
+        user_password: data.user_password,
+        user_status: data.user_status
       }
       this.isUpdate = true
       this.$refs['my-modal'].show()
-      this.category_id = data.category_id
+      this.user_id = data.user_id
       // console.log(data.product_id)
     },
-    patchCategory() {
+    patchUser() {
       const setData = {
-        category_id: this.category_id,
+        user_id: this.user_id,
         form: this.form
       }
       console.log(setData)
       this.$refs['my-modal'].hide()
-      this.isUpdate = false
-      this.updateCategorys(setData)
+      // this.isUpdate = false
+      this.updateUsers(setData)
         .then(response => {
           this.alert = true
           this.isMsg = response.msg
-          this.get_category()
+          this.getAllUsers()
         })
         .catch(error => {
           this.alert = true
           this.isMsg = error.data.msg
         })
     },
-    deleteCategory(data) {
+    deleteUser(data) {
       const setData = {
-        category_id: data.category_id,
+        user_id: data.user_id,
         form: data
       }
       // // console.log(setData)
-      this.deleteCategorys(setData)
+      this.deleteUsers(setData)
         .then(response => {
           this.alert = true
           this.isMsg = response.msg
-          this.get_category()
+          this.getAllUsers()
         })
         .catch(error => {
           this.alert = true
@@ -202,10 +191,9 @@ export default {
     },
     showModal() {
       this.form = {
-        category_name: '',
-        category_status: ''
+        user_name: '',
+        user_status: ''
       }
-      this.isUpdate = false
       this.$refs['my-modal'].show()
     },
     hideModal() {

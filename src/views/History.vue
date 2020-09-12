@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Histheader />
+    <HistHeader text="History" />
     <!-- sidebar -->
     <main>
       <div class="container-fluid sidebar">
@@ -27,17 +27,17 @@
             <div class="income">
               <b-col cols lg="3" class="left">
                 <h4>Today's Income</h4>
-                <p>Rp. {{historyDay}}</p>
+                <p>Rp. {{ historyDay }}</p>
                 <h4>+2% Yesterday</h4>
               </b-col>
               <b-col cols lg="3" class="mid">
                 <h4>Orders</h4>
-                <p>{{historyWeek}}</p>
+                <p>{{ historyWeek }}</p>
                 <h4>+5% Last Week</h4>
               </b-col>
               <b-col cols lg="3" class="right">
                 <h4>Today's Income</h4>
-                <p>Rp. {{historyYears}}</p>
+                <p>Rp. {{ historyYears }}</p>
                 <h4>+10% Last Year</h4>
               </b-col>
             </div>
@@ -48,7 +48,9 @@
                 </div>
                 <div>
                   <b-dropdown text="Months">
-                    <b-dropdown-item href="#" @click="getChart">Month</b-dropdown-item>
+                    <b-dropdown-item href="#" @click="getChart"
+                      >Month</b-dropdown-item
+                    >
                     <b-dropdown-item href="#">Another item</b-dropdown-item>
                   </b-dropdown>
                 </div>
@@ -67,7 +69,9 @@
                 </div>
                 <div>
                   <b-dropdown text="Today">
-                    <b-dropdown-item @click="getRecentOrder">Today</b-dropdown-item>
+                    <b-dropdown-item @click="getRecentOrder"
+                      >Today</b-dropdown-item
+                    >
                     <b-dropdown-item>This Week</b-dropdown-item>
                   </b-dropdown>
                 </div>
@@ -88,11 +92,11 @@
                     </tr>
                   </thead>
                   <tr v-for="(value, index) in data" :key="index">
-                    <td>{{value.invoices}}</td>
-                    <td>{{value.cashier}}</td>
-                    <td>{{value.date}}</td>
-                    <td>{{value.orders}}</td>
-                    <td>Rp. {{value.amount}}</td>
+                    <td>{{ value.invoices }}</td>
+                    <td>{{ value.cashier }}</td>
+                    <td>{{ value.date }}</td>
+                    <td>{{ value.orders }}</td>
+                    <td>Rp. {{ value.amount }}</td>
                   </tr>
                 </table>
               </b-col>
@@ -107,13 +111,13 @@
 
 <script>
 import axios from 'axios'
-import Histheader from '../components/_base/Histheader'
+import HistHeader from '../components/_base/HistHeader'
 // import Histcontent from '../components/_base/Hiscontent'
 
 export default {
   name: 'History',
   components: {
-    Histheader
+    HistHeader
     // Histcontent
   },
   data() {

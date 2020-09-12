@@ -9,6 +9,8 @@ import Register from '../views/auth/Register.vue'
 
 import store from '../store/index'
 import Product from '../views/mainTest/Product.vue'
+import Setting from '../views/Setting.vue'
+import Admin from '../views/Admin.vue'
 
 Vue.use(VueRouter)
 
@@ -52,6 +54,18 @@ const routes = [
     path: '/product',
     name: 'Product',
     component: Product,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/setting',
+    name: 'Setting',
+    component: Setting,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin,
     meta: { requiresAuth: true }
   }
 ]

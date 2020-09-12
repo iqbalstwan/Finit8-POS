@@ -5,16 +5,26 @@
         <b-col cols lg="1">
           <div class="menu">
             <router-link to="/">
-              <img style="margin-right:10px" src="../../assets/img/menu.png" class="menu-icon" />
+              <img
+                style="margin-right:10px"
+                src="../../assets/img/menu.png"
+                class="menu-icon"
+              />
             </router-link>
           </div>
         </b-col>
         <b-col cols lg="11">
-          <div class="top">
-            <p>History</p>
+          <div class="content">
+            <p>{{ text }}</p>
           </div>
         </b-col>
       </div>
     </div>
   </header>
 </template>
+
+<script>
+export default {
+  props: ['text']
+}
+</script>
