@@ -20,15 +20,7 @@
         required
         placeholder="Enter password"
       ></b-form-input>
-      <b-form-input
-        id="input-1"
-        class="form-passvalid"
-        v-model="form.user_password"
-        v-validate="'required|confirmed:pass'"
-        type="password"
-        required
-        placeholder="Enter password"
-      ></b-form-input>
+
       <b-form-input
         id="input-2"
         class="form-username"
