@@ -61,8 +61,13 @@ export default {
           this.$router.push('/')
         })
         .catch(error => {
-          //   console.log('error')
-          alert(error.response.data.msg)
+          console.log(error)
+          this.$bvToast.toast(`${error.response.data.msg}`, {
+            title: 'Check it again ',
+            variant: 'danger',
+            solid: true
+          })
+          // alert(error.response.data.msg)
         })
     },
     onReset() {

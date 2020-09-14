@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <Header /> -->
     <b-container fluid class="home">
       <b-row class="header">
         <b-col md="8">
@@ -10,13 +11,28 @@
               ><img src="../assets/img/menu.png"
             /></b-button>
             <b-sidebar
+              class="aside text-center"
               id="sidebar-1"
               title="Hello..."
               shadow
-              bg-variant="warning"
+              bg-variant="light"
             >
-              <h1>Admin</h1>
-              <h1>Setting</h1>
+              <router-link to="/admin" v-if="user.user_role === 1">
+                <h3 style="cursor:pointer;color:black">
+                  <img style="height:30px" src="../assets/img/admin.png" />
+                  Admin
+                </h3>
+              </router-link>
+              <router-link to="/setting" v-if="user.user_role === 1">
+                <h3 style="cursor:pointer;color:black">
+                  <img style="height:30px" src="../assets/img/list.png" />
+                  Setting
+                </h3>
+              </router-link>
+              <h3 style="cursor:pointer" @click="handleLogout">
+                <img style="height:30px" src="../assets/img/logout.png" />
+                Logout
+              </h3>
             </b-sidebar>
           </div>
           <div class="food">
@@ -31,7 +47,6 @@
                 v-model="find"
                 @change="searchProduct"
               />
-              <!-- </input> -->
               <button
                 type="reset"
                 style="background:transparent;background:white;border:none"
@@ -57,7 +72,7 @@
         <div class="row">
           <b-col cols md="1 text-center">
             <div class="fork">
-              <img @click="handleLogout" src="../assets/img/fork.png" />
+              <img src="../assets/img/fork.png" />
             </div>
             <div class="clipboard">
               <router-link to="/history">
@@ -103,22 +118,22 @@
                   </b-form-group>
                   <b-form-group
                     id="input-group-2"
-                    label="Price:"
+                    label="Image:"
                     label-for="input-2"
                   >
                   </b-form-group>
-                  <input type="file" @change="handleFile" />
+                  <input type="file" @change="handleFile" required />
                   <b-form-group
-                    id="input-group-3"
-                    label="Category Id:"
-                    label-for="input-3"
+                    id="input-group-4"
+                    label="Category:"
+                    label-for="input-4"
                   >
-                    <b-form-input
-                      id="input-3"
+                    <b-form-select
+                      id="input-4"
                       v-model="form.category_id"
+                      :options="category"
                       required
-                      placeholder="Input Category Id"
-                    ></b-form-input>
+                    ></b-form-select>
                   </b-form-group>
 
                   <b-form-group
@@ -133,19 +148,14 @@
                       required
                     ></b-form-select>
                   </b-form-group>
-                  <button
-                    type="submit"
-                    class="btn-pink"
-                    v-show="!isUpdate"
-                    @click="makeToast('success')"
-                  >
+                  <button type="submit" class="btn-pink" v-show="!isUpdate">
                     Add
                   </button>
                   <button
                     type="button"
                     class="btn-pink"
                     v-show="isUpdate"
-                    @click="patchProduct(), makeToast('primary')"
+                    @click="patchProduct()"
                   >
                     Update
                   </button>
@@ -159,22 +169,29 @@
                 <div>
                   <select v-model="defaultSort" @change="handleSort">
                     <option value>Sort by</option>
-                    <option value="product_name">Name</option>
-                    <option value="category_id">Category</option>
-                    <option value="product_price">Price</option>
-                    <option value="product_created_at DESC">Date</option>
+                    <optgroup label="Name">
+                      <option value="product_name">Name</option>
+                      <option value="product_name DESC">Name (Z-A)</option>
+                    </optgroup>
+                    <optgroup label="Category">
+                      <option value="category_id">Category</option>
+                      <option value="category_id DESC">Category (Z-A)</option>
+                    </optgroup>
+                    <optgroup label="PRICE">
+                      <option value="product_price">Price</option>
+                      <option value="product_price DESC">Price (Z-A)</option>
+                    </optgroup>
+                    <optgroup label="DATE">
+                      <option value="product_created_at ">Date</option>
+                      <option value="product_created_at DESC"
+                        >Date (Z-A)</option
+                      >
+                    </optgroup>
                   </select>
                 </div>
               </b-col>
               <hr />
-              <b-col
-                col
-                lg="4"
-                md="6"
-                sm="12"
-                v-for="(item, index) in products"
-                :key="index"
-              >
+              <b-col col lg="4" v-for="(item, index) in products" :key="index">
                 <div class="counting" @increment="incrementCount()">
                   <div class="select-image" v-if="checkCart(item)">
                     <img
@@ -184,7 +201,7 @@
                       alt
                     />
                   </div>
-                  <img :src="'http://127.0.0.1:3001/' + item.product_img" />
+                  <img :src="url + '/' + item.product_img" />
                   <h4 style="font-weight:bold">{{ item.product_name }}</h4>
                   <p style="color:grey">Rp. {{ item.product_price }}</p>
                   <b-button
@@ -202,12 +219,14 @@
                     v-b-modal.modal-1
                     variant="outline-primary"
                     v-on:click="setProduct(item)"
+                    v-if="user.user_role === 1"
                     >Update</b-button
                   >
                   <b-button
                     variant="outline-danger"
                     @click="deleteProduct(item)"
                     style="color:red;cursor:pointer;margin-left:10px"
+                    v-if="user.user_role === 1"
                     >Delete</b-button
                   >
                   <!-- </div> -->
@@ -238,34 +257,40 @@
               <h4>Your cart is empty</h4>
               <p>please add some item from the menu</p>
             </div>
-            <div class="cartIn" v-else-if="cart.length > 0">
-              <div class="img-cart" v-for="(item, index) in cart" :key="index">
-                <div class="hover">
-                  <img :src="'http://127.0.0.1:3001/' + item.product_img" alt />
-                </div>
-                <div class="items">
-                  <p style="color:grey">{{ item.product_name }}</p>
-                  <b-button variant="success" @click="decrement(item)"
-                    >-</b-button
-                  >
-                  <b-button variant="outline-success">{{
-                    item.order_qty
-                  }}</b-button>
-                  <b-button variant="success" @click="increment(item)"
-                    >+</b-button
-                  >
-                </div>
-                <div class="price">
-                  <b-button
-                    style="margin-bottom:10px"
-                    class="remove-cart"
-                    variant="danger"
-                    @click="removeCart(item)"
-                    >Remove</b-button
-                  >
-                  <p style="margin-top:15px;color:grey">
-                    Rp.{{ item.product_price * item.order_qty }}
-                  </p>
+            <div class="cartIn" v-if="cart.length > 0">
+              <div style="height:400px;overflow-y: auto;">
+                <div
+                  class="img-cart"
+                  v-for="(item, index) in cart"
+                  :key="index"
+                >
+                  <div class="hover">
+                    <img :src="url + '/' + item.product_img" alt />
+                  </div>
+                  <div class="items">
+                    <p style="color:grey">{{ item.product_name }}</p>
+                    <b-button variant="success" @click="decrement(item)"
+                      >-</b-button
+                    >
+                    <b-button variant="outline-success">{{
+                      item.order_qty
+                    }}</b-button>
+                    <b-button variant="success" @click="increment(item)"
+                      >+</b-button
+                    >
+                  </div>
+                  <div class="price">
+                    <b-button
+                      style="margin-bottom:10px"
+                      class="remove-cart"
+                      variant="danger"
+                      @click="removeCart(item)"
+                      >Remove</b-button
+                    >
+                    <p style="margin-top:15px;color:grey">
+                      Rp.{{ item.product_price * item.order_qty }}
+                    </p>
+                  </div>
                 </div>
               </div>
               <div class="total">
@@ -297,7 +322,7 @@
                   >
                     <div class="line1">
                       <div class="first">
-                        <div class="cashier">Cashier: Pevita Pearce</div>
+                        <div class="cashier">{{ user.user_name }}</div>
                         <div class="cashier">
                           Receipt no: # {{ modalCheckOut }}
                         </div>
@@ -342,17 +367,13 @@
                       <b-button
                         class="email"
                         style="width:460px;background: #57cad5;border:none;font-size: 25px;margin-top:20px"
+                        @click="clearCart()"
                         >Send Email</b-button
                       >
                     </div>
                   </b-modal>
                 </div>
-                <b-button
-                  class="cancel"
-                  @click="clearCart()"
-                  style="width:450px;background: #f24f8a;border:none;font-size: 25px;margin-top:10px;font-weight:bold"
-                  >Cancel</b-button
-                >
+                <b-button class="cancel" @click="clearCart()">Cancel</b-button>
               </div>
             </div>
           </b-col>
@@ -370,15 +391,16 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'Home',
-  // component: {
-  //   Header
-  // },
+  component: {
+    // Header
+  },
   data() {
     return {
       count: 0,
       // cart: [],
       currentPage: 1,
       defaultSort: '',
+      url: process.env.VUE_APP_URL,
       find: '',
       // limit: 6,
       // totalData: 1,
@@ -394,6 +416,14 @@ export default {
         product_img: {},
         product_status: ''
       },
+      category: [
+        { text: 'Select Category', value: null },
+        '1',
+        '2',
+        '3',
+        '4',
+        '13'
+      ],
       status: [{ text: 'Select Status', value: null }, '0', '1'],
       alert: false,
       // search: '',
@@ -415,7 +445,8 @@ export default {
       products: 'getProduct',
       cart: 'getCart',
       // modalCheckOut: 'getCheckOut',
-      search: 'getSearch'
+      search: 'getSearch',
+      user: 'setUser'
     }),
     totally() {
       const totals = this.cart.map(value => {
@@ -467,10 +498,21 @@ export default {
           this.alert = true
           this.isMsg = response.msg
           this.get_product()
+          this.$bvToast.toast(`${response.msg}`, {
+            title: 'Gotcha ',
+            variant: 'success',
+            solid: true
+          })
         })
         .catch(error => {
           this.alert = true
           this.isMsg = error.data.msg
+          this.$bvToast.toast(`${error.data.msg}`, {
+            title: 'Check it ',
+            variant: 'danger',
+            solid: true
+          })
+          // alert(error.data.msg)
         })
       // .then(response => {})
       // .catch(error => {})
@@ -509,10 +551,20 @@ export default {
           this.alert = true
           this.isMsg = response.msg
           this.get_product()
+          this.$bvToast.toast(`${response.msg}`, {
+            title: 'Update ',
+            variant: 'primary',
+            solid: true
+          })
         })
         .catch(error => {
           this.alert = true
           this.isMsg = error.data.msg
+          this.$bvToast.toast(`${error.data.msg}`, {
+            title: 'Update ',
+            variant: 'danger',
+            solid: true
+          })
         })
     },
     setDelete(data) {
@@ -536,10 +588,20 @@ export default {
           this.alert = true
           this.isMsg = response.msg
           this.get_product()
+          this.$bvToast.toast(`${response.msg}`, {
+            title: 'Deleted ',
+            variant: 'danger',
+            solid: true
+          })
         })
         .catch(error => {
           this.alert = true
           this.isMsg = error.data.msg
+          this.$bvToast.toast(`${error.data.msg}`, {
+            title: 'Delete ',
+            variant: 'danger',
+            solid: true
+          })
         })
     },
     postOrder() {
@@ -550,9 +612,19 @@ export default {
       this.postOrders(setCart)
         .then(response => {
           this.modalCheckOut = response.data.Invoices
+          this.$bvToast.toast(`${response.msg}`, {
+            title: 'Gotcha ',
+            variant: 'success',
+            solid: true
+          })
           console.log(response)
         })
         .catch(error => {
+          this.$bvToast.toast(`${error.data.msg}`, {
+            title: 'Order ',
+            variant: 'danger',
+            solid: true
+          })
           console.log(error)
         })
     },
@@ -584,152 +656,7 @@ export default {
       // when the modal has hidden
       this.$refs['my-modal'].toggle('#toggle-btn')
     },
-    // incrementCount(data) {
-    //   this.count += 1
-    // },
-    // increment(data) {
-    //   data.order_qty += 1
-    //   data.total_price = data.product_price * data.order_qty
-    // },
-    // decrement(data) {
-    //   if (data.order_qty === 1) {
-    //     alert('Please,Quantity not allowed')
-    //   } else {
-    //     data.order_qty -= 1
-    //     data.total_price = data.product_price * data.order_qty
-    //   }
-    // },
 
-    // addToCart(data) {
-    //   const setCart = {
-    //     product_id: data.product_id,
-    //     product_name: data.product_name,
-    //     product_price: data.product_price,
-    //     order_qty: 1,
-    //     total_price: data.product_price
-    //     // product_price
-    //   }
-    //   const fixedData = [...this.cart, setCart]
-    //   const addedItem = fixedData.find(
-    //     item => item.product_id === data.product_id
-    //   )
-    //   const existItem = this.cart.find(
-    //     item => item.product_id === data.product_id
-    //   )
-    //   if (existItem) {
-    //     addedItem.order_qty += 1
-    //   } else {
-    //     // spread operator
-    //     this.cart = [...this.cart, setCart]
-    //   }
-    //   // console.log(this.cart)
-    // },
-    // get_product() {
-    //   axios
-    //     .get(
-    //       `http://127.0.0.1:3001/product?sort=${this.sort}&page=${this.page}&limit=${this.limit}`
-    //       // 'http://127.0.0.1:3001/product'
-    //     )
-    //     .then(response => {
-    //       this.products = response.data.data
-    //       console.log(this.products)
-    //       this.totalData = response.data.pagination.totalData
-    //       this.$router.push(`?sort=${this.sort}&page=${this.page}`)
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    // },
-    // searchProduct() {
-    //   console.log(this.search)
-    //   if (this.search === '') {
-    //     this.get_product()
-    //   } else {
-    //     axios
-    //       .get(`http://127.0.0.1:3001/product?search=${this.search}`)
-    //       .then(response => {
-    //         this.products = response.data.data
-    //         this.$router.push(`?produk=${this.search}`)
-    //         console.log(this.products)
-    //       })
-    //       .catch(error => {
-    //         console.log(error)
-    //       })
-    //   }
-    // },
-    // addProduct() {
-    //   console.log(this.form)
-    //   axios
-    //     .post(
-    //       // `http://127.0.0.1:3001/product?page=${this.page}limit=${this.limit}`
-    //       'http://127.0.0.1:3001/product',
-    //       this.form
-    //     )
-    //     .then(response => {
-    //       this.$refs['my-modal'].hide()
-    //       this.alert = true
-    //       this.isMsg = response.data.msg
-    //       // alert(this.isMsg)
-    //       // console.log(this.products)
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    // },
-
-    // patchProduct() {
-    //   // console.log(this.product_id)
-    //   // console.log(this.form)
-    //   this.isUpdate = false
-
-    //   axios
-    //     .patch(`http://127.0.0.1:3001/product/${this.product_id}`, this.form)
-    //     .then(response => {
-    //       this.$refs['my-modal'].hide()
-    //       this.get_product()
-    //       console.log(response)
-    //       this.alert = true
-    //       this.isMsg = response.data.msg
-    //       // alert(this.isMsg)
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    // },
-    // deleteProduct(data) {
-    //   // console.log(this.product_id)
-    //   // console.log(this.form)
-    //   axios
-    //     .delete(`http://127.0.0.1:3001/product/${data.product_id}`, this.form)
-    //     .then(response => {
-    //       this.get_product()
-    //       this.alert = true
-    //       this.isMsg = response.data.msg
-    //       alert(this.isMsg)
-    //       console.log(response)
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    // },
-    // postOrder(data) {
-    //   const setCart = {
-    //     orders: [...this.cart]
-    //   }
-    //   console.log(setCart)
-    //   axios
-    //     .post('http://127.0.0.1:3001/order', setCart)
-    //     .then(response => {
-    //       this.modalCheckOut = response.data.data
-    //       console.log(response)
-    //       // this.alert = true
-    //       // this.invoice = response.data.data
-    //       // this.isMsg = response.data.msg
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    // },
     searchProduct() {
       console.log(this.find)
       if (this.find === '') {
@@ -751,13 +678,6 @@ export default {
       this.$router.push(`?page=${event}`)
       this.setPage(event)
       this.get_product()
-    },
-    makeToast(variant = null) {
-      this.$bvToast.toast('Well Done ', {
-        // title: 'Message ',
-        variant: variant,
-        solid: true
-      })
     }
   }
 }

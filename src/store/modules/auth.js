@@ -26,7 +26,7 @@ export default {
     login(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3001/user/login', payload)
+          .post(`${process.env.VUE_APP_URL}/user/login`, payload)
           .then(response => {
             console.log(response)
             context.commit('setUser', response.data.data)
@@ -40,10 +40,10 @@ export default {
       })
     },
     register(context, payload) {
-      console.log(payload)
+      //   console.log(payload)
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3001/user/register', payload)
+          .post(`${process.env.VUE_APP_URL}/user/register`, payload)
 
           .then(response => {
             context.commit('setUser', response.data.data)
@@ -93,7 +93,12 @@ export default {
               localStorage.removeItem('token')
               context.commit('delUser')
               router.push('/login')
-              alert('You cannot access, Invalid token!')
+              this.$bvToast.toast(`${error.response.data.msg}`, {
+                title: 'You are... ',
+                variant: 'danger',
+                solid: true
+              })
+              //   alert('You cannot access, Invalid token!')
             } else if (
               error.response.data.msg === 'jwt expired' ||
               error.response.data.msg === 'jwt malformed'
@@ -101,6 +106,11 @@ export default {
               localStorage.removeItem('token')
               context.commit('delUser')
               router.push('/login')
+              //   this.$bvToast.toast('Your token is expired!', {
+              //     title: 'You are... ',
+              //     variant: 'danger',
+              //     solid: true
+              //   })
               alert('Your token is expired!')
             }
           }
@@ -112,7 +122,7 @@ export default {
       // console.log(payload)
       axios
         .get(
-          'http://127.0.0.1:3001/user'
+          `${process.env.VUE_APP_URL}/user`
           // 'http://127.0.0.1:3001/product'
         )
         .then(response => {
@@ -129,7 +139,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `http://127.0.0.1:3001/user/update/${payload.user_id}`,
+            `${process.env.VUE_APP_URL}/user/update/${payload.user_id}`,
             payload.form
           )
           .then(response => {
@@ -149,7 +159,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .delete(
-            `http://127.0.0.1:3001/user/delete/${payload.user_id}`,
+            `${process.env.VUE_APP_URL}/user/delete/${payload.user_id}`,
             payload.form
           )
           .then(response => {
@@ -169,6 +179,9 @@ export default {
     },
     getUsers(state) {
       return state.allUsers
+    },
+    setUser(state) {
+      return state.user
     }
   }
 }

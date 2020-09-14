@@ -14,13 +14,10 @@
         id="input-1"
         class="form-password"
         v-model="form.user_password"
-        v-validate="'required'"
-        ref="pass"
         type="password"
         required
         placeholder="Enter password"
       ></b-form-input>
-
       <b-form-input
         id="input-2"
         class="form-username"
@@ -29,7 +26,9 @@
         placeholder="Enter username"
       ></b-form-input>
 
-      <b-button pill type="submit" @click="userRegister">Submit</b-button>
+      <b-button pill type="submit" @click.prevent="userRegister"
+        >Submit</b-button
+      >
       <router-link to="/">
         <h6
           style="color:white;text-align:center;cursor:pointer;margin-top:40px"
@@ -70,6 +69,22 @@ export default {
       // .then(response => {})
       // .catch(error => {})
       this.register(this.form)
+        .then(result => {
+          console.log(result)
+          this.$bvToast.toast(`${result.msg}`, {
+            title: 'Success ',
+            variant: 'success',
+            solid: true
+          })
+        })
+        .catch(error => {
+          //   console.log(error.data.data.msg)
+          this.$bvToast.toast(`${error.data.msg}`, {
+            title: 'Check it again ',
+            variant: 'danger',
+            solid: true
+          })
+        })
     }
   }
 }

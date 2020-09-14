@@ -25,7 +25,7 @@ export default {
     getAllCategory(context, payload) {
       axios
         .get(
-          `http://127.0.0.1:3001/category?sort=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
+          `${process.env.VUE_APP_URL}/category?sort=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           // 'http://127.0.0.1:3001/product'
         )
         .then(response => {
@@ -43,7 +43,7 @@ export default {
       console.log(payload)
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3001/category', payload)
+          .post(`${process.env.VUE_APP_URL}/category`, payload)
           .then(response => {
             console.log(response)
             resolve(response.data)
@@ -60,7 +60,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `http://127.0.0.1:3001/category/${payload.category_id}`,
+            `${process.env.VUE_APP_URL}/category/${payload.category_id}`,
             payload.form
           )
           .then(response => {
@@ -79,7 +79,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .delete(
-            `http://127.0.0.1:3001/category/${payload.category_id}`,
+            `${process.env.VUE_APP_URL}/category/${payload.category_id}`,
             payload.form
           )
           .then(response => {

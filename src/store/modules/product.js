@@ -56,7 +56,10 @@ export default {
     },
     decrement(state, payload) {
       if (payload.order_qty === 1) {
-        alert('Please,Quantity not allowed')
+        state.cart.splice(
+          state.cart.findIndex(item => item.product_id === payload.product_id),
+          1
+        )
       } else {
         payload.order_qty -= 1
         payload.total_price = payload.product_price * payload.order_qty
@@ -89,7 +92,7 @@ export default {
     getProducts(context, payload) {
       axios
         .get(
-          `http://127.0.0.1:3001/product?sort=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
+          `${process.env.VUE_APP_URL}/product?sort=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           // 'http://127.0.0.1:3001/product'
         )
         .then(response => {
@@ -106,7 +109,7 @@ export default {
       //   console.log(payload)
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3001/product', payload)
+          .post(`${process.env.VUE_APP_URL}/product`, payload)
           .then(response => {
             console.log(response)
             resolve(response.data)
@@ -123,7 +126,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `http://127.0.0.1:3001/product/${payload.product_id}`,
+            `${process.env.VUE_APP_URL}/product/${payload.product_id}`,
             payload.form
           )
           .then(response => {
@@ -143,7 +146,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .delete(
-            `http://127.0.0.1:3001/product/${payload.product_id}`,
+            `${process.env.VUE_APP_URL}/product/${payload.product_id}`,
             payload.form
           )
           .then(response => {
@@ -160,7 +163,7 @@ export default {
       console.log(payload)
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3001/order', payload)
+          .post(`${process.env.VUE_APP_URL}/order`, payload)
           .then(response => {
             resolve(response.data)
             // this.invoice = response.data.data
@@ -175,7 +178,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `http://127.0.0.1:3001/product?search=${context.state.search}`,
+            `${process.env.VUE_APP_URL}/product?search=${context.state.search}`,
             payload
           )
           .then(response => {

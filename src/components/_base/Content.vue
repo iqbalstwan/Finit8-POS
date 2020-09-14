@@ -2,7 +2,12 @@
   <header>
     <div class="container-fluid home">
       <div class="row text-center">
-        <b-col cols lg="12" sm="12">
+        <b-col
+          cols
+          lg="12"
+          sm="12"
+          style="background:whitesmoke;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25)"
+        >
           <table class="table table-sm" id="recent">
             <thead class="”thead-light”">
               <tr>
@@ -62,19 +67,14 @@
                           required
                         ></b-form-select>
                       </b-form-group>
-                      <button
-                        type="submit"
-                        class="btn-pink"
-                        v-show="!isUpdate"
-                        @click="makeToast('success')"
-                      >
+                      <button type="submit" class="btn-pink" v-show="!isUpdate">
                         Add
                       </button>
                       <button
                         type="button"
                         class="btn-pink"
                         v-show="isUpdate"
-                        @click="patchUser(), makeToast('primary')"
+                        @click="patchUser()"
                       >
                         Update
                       </button>
@@ -166,6 +166,11 @@ export default {
           this.alert = true
           this.isMsg = response.msg
           this.getAllUsers()
+          this.$bvToast.toast(`${response.msg}`, {
+            title: 'Updated ',
+            variant: 'primary',
+            solid: true
+          })
         })
         .catch(error => {
           this.alert = true
@@ -203,14 +208,14 @@ export default {
       // We pass the ID of the button that we want to return focus to
       // when the modal has hidden
       this.$refs['my-modal'].toggle('#toggle-btn')
-    },
-    makeToast(variant = null) {
-      this.$bvToast.toast('Patch Done ', {
-        title: 'Update ',
-        variant: variant,
-        solid: true
-      })
     }
+    // makeToast(variant = null) {
+    //   this.$bvToast.toast('Patch Done ', {
+    //     title: 'Update ',
+    //     variant: variant,
+    //     solid: true
+    //   })
+    // }
   }
 }
 </script>
