@@ -155,7 +155,8 @@ export default {
       'getOrders',
       'getData',
       'getWeekOrders',
-      'getMonthOrders'
+      'getMonthOrders',
+      'setUser'
     ])
   },
   methods: {
@@ -177,75 +178,6 @@ export default {
       'setWeekOrder',
       'setMonthOrder'
     ])
-    // getRecentOrder(data) {
-    //   axios
-    //     .get(`${process.env.VUE_APP_URL}/history/recent/order`)
-    //     .then(response => {
-    //       this.recentOrder = response.data.data
-    //       this.recentOrder.map(value => {
-    //         const setData = {
-    //           invoices: value.invoice,
-    //           cashier: 'Pevita Pearce',
-    //           date: value.history_created_at.slice(0, 10),
-    //           orders: value.orders
-    //             .map(item => item.product_name.concat(` ${item.order_qty}x`))
-    //             .join(', '),
-    //           amount: value.history_subTotal
-    //         }
-    //         this.data = [...this.data, setData]
-    //         console.log(this.data)
-    //       })
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    // },
-    // getWeekOrder(data) {
-    //   axios
-    //     .get(`${process.env.VUE_APP_URL}/history/week/order`)
-    //     .then(response => {
-    //       this.weekOrder = response.data.data
-    //       this.weekOrder.map(value => {
-    //         const setData = {
-    //           invoices: value.invoice,
-    //           cashier: 'Pevita Pearce',
-    //           date: value.history_created_at.slice(0, 10),
-    //           orders: value.orders
-    //             .map(item => item.product_name.concat(` ${item.order_qty}x`))
-    //             .join(', '),
-    //           amount: value.history_subTotal
-    //         }
-    //         this.data = [...this.data, setData]
-    //         console.log(this.data)
-    //       })
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    // },
-    // getMonthOrder(data) {
-    //   axios
-    //     .get(`${process.env.VUE_APP_URL}/history/month/order`)
-    //     .then(response => {
-    //       this.monthOrder = response.data.data
-    //       this.monthOrder.map(value => {
-    //         const setData = {
-    //           invoices: value.invoice,
-    //           cashier: 'Pevita Pearce',
-    //           date: value.history_created_at.slice(0, 10),
-    //           orders: value.orders
-    //             .map(item => item.product_name.concat(` ${item.order_qty}x`))
-    //             .join(', '),
-    //           amount: value.history_subTotal
-    //         }
-    //         this.data = [...this.data, setData]
-    //         console.log(this.data)
-    //       })
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    // }
   }
 }
 </script>

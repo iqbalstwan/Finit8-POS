@@ -25,21 +25,15 @@
         required
         placeholder="Enter username"
       ></b-form-input>
-
       <b-button pill type="submit" @click.prevent="userRegister"
-        >Submit</b-button
+        >Register</b-button
       >
-      <router-link to="/">
-        <h6
-          style="color:white;text-align:center;cursor:pointer;margin-top:40px"
-        >
-          Sign in
-        </h6>
-      </router-link>
+      <h1 v-font-size style="text-align:center;margin-top:15px">
+        Already have an account?
+        <router-link to="/login">Sign in</router-link>
+      </h1>
     </b-form>
     <hr />
-    <!-- <h3>{{ name }}</h3> -->
-    <!-- <h3>{{ dataName }}</h3> -->
   </div>
 </template>
 

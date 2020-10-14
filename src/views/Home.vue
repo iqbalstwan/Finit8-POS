@@ -8,8 +8,9 @@
             <b-button
               style="background-color:transparent;border:none"
               v-b-toggle.sidebar-1
-              ><img src="../assets/img/menu.png"
-            /></b-button>
+            >
+              <img src="../assets/img/menu.png" />
+            </b-button>
             <b-sidebar
               class="aside text-center"
               id="sidebar-1"
@@ -72,11 +73,17 @@
         <div class="row">
           <b-col cols md="1 text-center">
             <div class="fork">
-              <img src="../assets/img/fork.png" />
+              <img
+                v-b-popover.hover.top="'Menu'"
+                src="../assets/img/fork.png"
+              />
             </div>
             <div class="clipboard">
               <router-link to="/history">
-                <img src="../assets/img/clipboard.png" />
+                <img
+                  v-b-popover.hover.top="'History'"
+                  src="../assets/img/clipboard.png"
+                />
               </router-link>
             </div>
             <div>
@@ -85,7 +92,10 @@
                 class="add"
                 style="background-color:transparent;border:none"
               >
-                <img src="../assets/img/add.png" />
+                <img
+                  v-b-popover.hover.top="'Add'"
+                  src="../assets/img/add.png"
+                />
               </b-button>
               <b-modal ref="my-modal" title :hide-footer="true">
                 <form v-on:submit.prevent="addProduct">
@@ -120,8 +130,7 @@
                     id="input-group-2"
                     label="Image:"
                     label-for="input-2"
-                  >
-                  </b-form-group>
+                  ></b-form-group>
                   <input type="file" @change="handleFile" required />
                   <b-form-group
                     id="input-group-4"
@@ -163,12 +172,12 @@
               </b-modal>
             </div>
           </b-col>
-          <b-col cols md="7" class="menu">
+          <b-col cols md="7" sm="12" class="menu">
             <b-row>
               <b-col cols="12">
                 <div>
                   <select v-model="defaultSort" @change="handleSort">
-                    <option value>Sort by</option>
+                    <option value>-Sort by-</option>
                     <optgroup label="Name">
                       <option value="product_name">Name</option>
                       <option value="product_name DESC">Name (Z-A)</option>
@@ -179,12 +188,14 @@
                     </optgroup>
                     <optgroup label="PRICE">
                       <option value="product_price">Price</option>
-                      <option value="product_price DESC">Price (Z-A)</option>
+                      <option value="product_price DESC"
+                        >Price (Highest-Lowest)</option
+                      >
                     </optgroup>
                     <optgroup label="DATE">
                       <option value="product_created_at ">Date</option>
                       <option value="product_created_at DESC"
-                        >Date (Z-A)</option
+                        >Date (Oldest-Newest)</option
                       >
                     </optgroup>
                   </select>
@@ -195,7 +206,7 @@
                 <div class="counting" @increment="incrementCount()">
                   <div class="select-image" v-if="checkCart(item)">
                     <img
-                      style="width:40px;height:50px;text-align:center;margin-left:105px;margin-top:60px"
+                      style="width:40px;height:50px;text-align:center;"
                       src="../assets/img/tick (1).png"
                       class="select-icon"
                       alt
@@ -216,18 +227,20 @@
                   <!-- <div class="button-bot"> -->
                   <!-- modal Update -->
                   <b-button
+                    v-b-popover.hover.top="'Update'"
                     v-b-modal.modal-1
                     variant="outline-primary"
                     v-on:click="setProduct(item)"
                     v-if="user.user_role === 1"
-                    >Update</b-button
+                    >Up</b-button
                   >
                   <b-button
+                    v-b-popover.hover.top="'Delete'"
                     variant="outline-danger"
-                    @click="deleteProduct(item)"
+                    @click.prevent="deleteProduct(item)"
                     style="color:red;cursor:pointer;margin-left:10px"
                     v-if="user.user_role === 1"
-                    >Delete</b-button
+                    >Del</b-button
                   >
                   <!-- </div> -->
                   <!-- <p v-if="checkCart(item)">checklist</p> -->
@@ -251,7 +264,7 @@
               </b-col>
             </b-row>
           </b-col>
-          <b-col cols md="4">
+          <b-col cols md="4" sm="12">
             <div class="cart text-center" v-if="cart.length <= 0">
               <img src="../assets/img/food-and-restaurant.png" alt />
               <h4>Your cart is empty</h4>
@@ -272,16 +285,16 @@
                     <b-button variant="success" @click="decrement(item)"
                       >-</b-button
                     >
-                    <b-button variant="outline-success">{{
-                      item.order_qty
-                    }}</b-button>
+                    <b-button variant="outline-success">
+                      {{ item.order_qty }}
+                    </b-button>
                     <b-button variant="success" @click="increment(item)"
                       >+</b-button
                     >
                   </div>
                   <div class="price">
                     <b-button
-                      style="margin-bottom:10px"
+                      style="margin-bottom:10px;width:100%"
                       class="remove-cart"
                       variant="danger"
                       @click="removeCart(item)"
@@ -322,7 +335,9 @@
                   >
                     <div class="line1">
                       <div class="first">
-                        <div class="cashier">{{ user.user_name }}</div>
+                        <div class="cashier">
+                          Cashier : {{ user.user_name }}
+                        </div>
                         <div class="cashier">
                           Receipt no: # {{ modalCheckOut }}
                         </div>
@@ -337,7 +352,7 @@
                           <p>{{ item.product_name }} x{{ item.order_qty }}</p>
                         </div>
                         <div>
-                          <p>Rp. {{ item.product_price }}</p>
+                          <p>Rp. {{ item.product_price * item.order_qty }}</p>
                         </div>
                       </div>
                       <div
@@ -359,14 +374,15 @@
                         </div>
                       </div>
                       <b-button
+                        @click="download()"
                         class="print"
-                        style="width:460px;background: #f24f8a;border:none;font-size: 25px;margin-top:20px"
+                        style="width:100%;background: #f24f8a;border:none;font-size: 25px;margin-top:20px"
                         >Print</b-button
                       >
                       <div style="text-align:center;margin-top:10px">OR</div>
                       <b-button
                         class="email"
-                        style="width:460px;background: #57cad5;border:none;font-size: 25px;margin-top:20px"
+                        style="width:100%;background: #57cad5;border:none;font-size: 25px;margin-top:20px"
                         @click="clearCart()"
                         >Send Email</b-button
                       >
@@ -385,6 +401,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import JsPDF from 'jspdf'
 // import axios from 'axios'
 // import Header from '../components/_base/Header'
 // import Menu from '../components/_base/Menu'
@@ -430,7 +447,7 @@ export default {
       isSearch: false,
       isMsg: '',
       isUpdate: false
-      // product_id: ''
+      // isLogout: ''
     }
   },
   created() {
@@ -464,7 +481,8 @@ export default {
       'updateProducts',
       'deleteProducts',
       'postOrders',
-      'searching'
+      'searching',
+      'logout'
     ]),
     ...mapMutations([
       'setPage',
@@ -478,8 +496,42 @@ export default {
       'clearCart'
       // 'modalCheckOut'
     ]),
-    ...mapActions({ get_product: 'getProducts', handleLogout: 'logout' }),
+    ...mapActions({ get_product: 'getProducts' }),
+    handleLogout() {
+      this.$bvModal
+        .msgBoxConfirm('Are you sure?', {
+          cancelVariant: 'light',
+          okVariant: 'info',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0',
+          centered: true
+        })
+        .then(item => {
+          this.isLogout = item
+          this.isLogout ? this.logout(this.$bvToast) : console.log(item)
+        })
+    },
+    download() {
+      console.log(this.cart[0].product_name)
+      // Jspdf.default = Jspdf
+      const doc = new JsPDF()
+      doc.setFontSize(14)
+      doc.text(
+        `- FINIT8 -
 
+      Cashier : ${this.user.user_name}
+      Receipt no : #${this.modalCheckOut}
+      Item: ${this.cart[0].product_name}x${this.cart[0].order_qty}  Rp.${this
+          .cart[0].product_price * this.cart[0].order_qty}
+      Ppn10% : Rp.${(this.totally * 10) / 100}
+      Total : Rp.${this.totally + (this.totally * 10) / 100}
+      Date : ${new Date()}`,
+        15,
+        15
+      )
+
+      doc.save('pdf.pdf')
+    },
     handleFile(event) {
       this.form.product_img = event.target.files[0]
       console.log(event.target.files)
@@ -582,8 +634,22 @@ export default {
         product_id: data.product_id,
         form: data
       }
+      // this.$bvModal
+      //   .msgBoxConfirm('Are you sure?', {
+      //     cancelVariant: 'light',
+      //     okVariant: 'info',
+      //     headerClass: 'p-2 border-bottom-0',
+      //     footerClass: 'p-2 border-top-0',
+      //     centered: true
+      //   })
+      // .then(item => {
+      //   this.del = item
+      //   this.del
+      //     ? this.deleteProducts(this.$bvModal, setData)
+      //     : console.log(item)
+      // })
       // // console.log(setData)
-      this.deleteProducts(setData)
+      this.deleteProducts(setData, this.$bvModal)
         .then(response => {
           this.alert = true
           this.isMsg = response.msg

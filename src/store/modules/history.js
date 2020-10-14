@@ -32,7 +32,7 @@ export default {
       payload.map(value => {
         const setData = {
           invoices: value.invoice,
-          cashier: value.user_name,
+          cashier: 'Pevita Pearce',
           date: value.history_created_at.slice(0, 10),
           orders: value.orders
             .map(item => item.product_name.concat(` ${item.order_qty}x`))
@@ -40,8 +40,8 @@ export default {
           amount: value.history_subTotal
         }
         state.recentOrder = [...state.recentOrder, setData]
-        console.log(payload.user_name)
-        console.log(state.recentOrder)
+        console.log('========')
+        console.log(state.user)
       })
     },
     setWeekOrder(state, payload) {
@@ -56,7 +56,7 @@ export default {
           amount: value.history_subTotal
         }
         state.weekOrder = [...state.weekOrder, setData]
-        console.log(payload.user_name)
+        console.log(setData)
       })
     },
     setMonthOrder(state, payload) {

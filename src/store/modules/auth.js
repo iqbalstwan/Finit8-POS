@@ -57,10 +57,18 @@ export default {
           })
       })
     },
-    logout(context) {
+    logout(context, payload) {
       localStorage.removeItem('token')
       context.commit('delUser')
-      router.push('/login')
+      // router.push('/login')
+      payload.toast("You'll be redirect to login page", {
+        title: 'Success',
+        variant: 'success',
+        solid: true
+      })
+      setTimeout(() => {
+        router.push('/login')
+      }, 2000)
     },
     interceptorRequest(context) {
       console.log('inteceptor works')
@@ -76,7 +84,7 @@ export default {
         }
       )
     },
-    interceptorResponse(context) {
+    interceptorResponse(context, payload) {
       axios.interceptors.response.use(
         function(response) {
           // Any status code that lie within the range of 2xx cause this function to trigger
@@ -93,11 +101,16 @@ export default {
               localStorage.removeItem('token')
               context.commit('delUser')
               router.push('/login')
-              this.$bvToast.toast(`${error.response.data.msg}`, {
-                title: 'You are... ',
+              payload.toast(`${error.response.data.msg}`, {
+                title: 'You are...',
                 variant: 'danger',
                 solid: true
               })
+              // this.$bvToast.toast(`${error.response.data.msg}`, {
+              //   title: 'You are... ',
+              //   variant: 'danger',
+              //   solid: true
+              // })
               //   alert('You cannot access, Invalid token!')
             } else if (
               error.response.data.msg === 'jwt expired' ||
@@ -111,6 +124,11 @@ export default {
               //     variant: 'danger',
               //     solid: true
               //   })
+              payload.toast('Your token is expired', {
+                title: 'You are...',
+                variant: 'danger',
+                solid: true
+              })
               alert('Your token is expired!')
             }
           }

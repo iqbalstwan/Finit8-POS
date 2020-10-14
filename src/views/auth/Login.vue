@@ -18,14 +18,13 @@
         required
         placeholder="Enter password"
       ></b-form-input>
-      <router-link to="/Register">
-        <h6 style="color:white;text-align:right;cursor:pointer">Sign Up?</h6>
-      </router-link>
       <b-button pill type="submit">Login</b-button>
+      <h1 v-font-size style="text-align:center;margin-top:15px">
+        Don't have an account?
+        <router-link to="/register">Sign Up</router-link>
+      </h1>
     </b-form>
     <hr />
-    <!-- <h3>{{ name }}</h3> -->
-    <!-- <h3>{{ dataName }}</h3> -->
   </div>
 </template>
 
@@ -56,9 +55,16 @@ export default {
     onSubmit() {
       //   console.log(this.form)
       this.login(this.form)
-        .then(result => {
-          console.log(result)
-          this.$router.push('/')
+        .then(response => {
+          this.$bvToast.toast('Login success', {
+            title: 'Success',
+            variant: 'success',
+            solid: true
+          })
+
+          setTimeout(() => {
+            this.$router.push('/')
+          }, 2000)
         })
         .catch(error => {
           console.log(error)

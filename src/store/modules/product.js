@@ -102,7 +102,9 @@ export default {
           // this.$router.push(`?sort=${this.sort}&page=${this.page}`)
         })
         .catch(error => {
-          console.log(error)
+          // console.log('-----store')
+          // console.log(error.response.data.msg)
+          alert(error.response.data.msg)
         })
     },
     addProducts(context, payload) {
@@ -116,7 +118,6 @@ export default {
           })
           .catch(error => {
             reject(error.response)
-            console.log(error.response)
           })
       })
     },

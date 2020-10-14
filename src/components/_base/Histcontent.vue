@@ -24,19 +24,12 @@
                     class="addCategory"
                     style="background-color:transparent;border:none;height:25px"
                   >
-                    <img
-                      style="height:15px;margin-top:-13px"
-                      src="../../assets/img/add.png"
-                    />
+                    <img style="height:15px;margin-top:-13px" src="../../assets/img/add.png" />
                   </b-button>
 
                   <b-modal ref="my-modal" title :hide-footer="true">
                     <form v-on:submit.prevent="addCategory">
-                      <b-form-group
-                        id="input-group-1"
-                        label="Category Name:"
-                        label-for="input-1"
-                      >
+                      <b-form-group id="input-group-1" label="Category Name:" label-for="input-1">
                         <b-form-input
                           id="input-1"
                           v-model="form.category_name"
@@ -46,11 +39,7 @@
                         ></b-form-input>
                       </b-form-group>
 
-                      <b-form-group
-                        id="input-group-4"
-                        label="Category Status:"
-                        label-for="input-4"
-                      >
+                      <b-form-group id="input-group-4" label="Category Status:" label-for="input-4">
                         <b-form-select
                           id="input-4"
                           v-model="form.category_status"
@@ -58,17 +47,13 @@
                           required
                         ></b-form-select>
                       </b-form-group>
-                      <button type="submit" class="btn-pink" v-show="!isUpdate">
-                        Add
-                      </button>
+                      <button type="submit" class="btn-pink" v-show="!isUpdate">Add</button>
                       <button
                         type="button"
                         class="btn-pink"
                         v-show="isUpdate"
                         @click="patchCategory()"
-                      >
-                        Update
-                      </button>
+                      >Update</button>
                     </form>
                   </b-modal>
                 </th>
@@ -85,14 +70,12 @@
                   v-b-modal.modal-1
                   variant="outline-primary"
                   v-on:click="setCategory(item)"
-                  >Update</b-button
-                >
+                >Update</b-button>
                 <b-button
                   variant="outline-danger"
                   @click="deleteCategory(item)"
                   style="color:red;cursor:pointer;margin-left:10px"
-                  >Delete</b-button
-                >
+                >Delete</b-button>
               </td>
             </tr>
           </table>
@@ -101,6 +84,89 @@
     </div>
   </header>
 </template>
+
+<style scoped>
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: 0.5em 0 0.75em;
+}
+
+table tr {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 0.35em;
+}
+
+table th,
+table td {
+  padding: 0.625em;
+  text-align: center;
+}
+
+table th {
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 768px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: 0.625em;
+  }
+
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 0.8em;
+    text-align: left;
+  }
+
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+</style>
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'

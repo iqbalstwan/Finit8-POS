@@ -1,6 +1,15 @@
-<h1 align='center'>Vue JS - FINIT8</h1>
+<h1 align='center'>VueJS - Elcapp</h1>
+  <p align="center">
+    <a href="/">View Demo</a>
+    ·
+    <a href="/">Report Bug</a>
+    ·
+    <a href="/">Request Feature</a>
+  </p>
+  
+## About The Project
 
-This project called FINIT8-POS. [More about Vue](https://vuejs.org/)
+Finit8
 
 ## Built With
 
@@ -11,35 +20,26 @@ This project called FINIT8-POS. [More about Vue](https://vuejs.org/)
 
 1. <a href="https://nodejs.org/en/download/">Node Js</a>
 2. Node_modules `npm install` or `yarn install`
-3. Backend API #nama_projek [`here`](https://github.com/arkbootcamp/week4-web3-express)
+3. Backend API Finit8 [`here`](https://github.com/iqbalstwan/Backend-Finit8)
 
-## How to Install
+## Getting Started
 
-1. Download this Project or you can type `git clone #link_git`
+1. Download this Project or you can type `git clone #https://github.com/iqbalstwan/Finit8-POS`
 2. Open app's directory in CMD or Terminal
 3. Type `npm install` or `yarn install`
-4. Type `npm start`
+4. Add .env file at root folder project
+5. Compiles and hot-reloads for development `npm run serve`
+6. Compiles and minifies for production `npm run build`
+7. Lints and fixes files `npm run lint`
 
-## Visit the Web
+## Acknowledgements
 
-You can visit the web [`here`](https://www.google.com/)
+- [Axios](https://www.npmjs.com/package/axios)
+- [Vuex](https://vuex.vuejs.org/)
+- [Express](https://www.npmjs.com/package/express)
+- [vue-Bootstrap](https://bootstrap-vue.org/)
+- [JsPDF](https://www.npmjs.com/package/jspdf)
 
-## Compiles and hot-reloads for development
+### License
 
-```
-npm run serve
-```
-
-## Compiles and minifies for production
-
-```
-npm run build
-```
-
-## Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-## License
-
-© [Iqbal Setiawan](https://github.com/iqbalstwan)
+&#169; Iqbal Setiawan
