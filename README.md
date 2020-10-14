@@ -1,4 +1,4 @@
-<h1 align='center'>VueJS - Elcapp</h1>
+<h1 align='center'>FINIT8</h1>
   <p align="center">
     <a href="/">View Demo</a>
     ·
