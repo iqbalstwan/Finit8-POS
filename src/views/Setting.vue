@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import HistHeader from '../components/_base/HistHeader'
-import HistContent from '../components/_base/HistContent'
+import HistHeader from '../components/_base/Histheader'
+import HistContent from '../components/_base/Histcontent'
 
 export default {
   name: 'Setting',

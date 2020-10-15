@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import HistHeader from '../components/_base/HistHeader'
+import HistHeader from '../components/_base/Histheader'
 import Content from '../components/_base/Content'
 
 export default {

@@ -13,7 +13,6 @@ export default {
   },
   mutations: {
     addToCart(state, payload) {
-      console.log(payload)
       const setCart = {
         product_id: payload.product_id,
         product_name: payload.product_name,
@@ -66,21 +65,15 @@ export default {
       }
     },
     setSearch(state, payload) {
-      console.log('storeeeee')
-      console.log(payload)
       state.search = payload
       state.products = payload.data
     },
     setProduct(state, payload) {
-      //   console.log('storeeeee')
-      //   console.log(payload)
       state.products = payload.data
       state.totalData = payload.pagination.totalData
     },
     setPage(state, payload) {
       state.page = payload
-      //   console.log(payload)
-      //   console.log(state.page)
     },
     setSort(state, payload) {
       state.sort = payload

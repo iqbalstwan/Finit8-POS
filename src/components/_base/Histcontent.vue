@@ -24,12 +24,19 @@
                     class="addCategory"
                     style="background-color:transparent;border:none;height:25px"
                   >
-                    <img style="height:15px;margin-top:-13px" src="../../assets/img/add.png" />
+                    <img
+                      style="height:15px;margin-top:-13px"
+                      src="../../assets/img/add.png"
+                    />
                   </b-button>
 
                   <b-modal ref="my-modal" title :hide-footer="true">
                     <form v-on:submit.prevent="addCategory">
-                      <b-form-group id="input-group-1" label="Category Name:" label-for="input-1">
+                      <b-form-group
+                        id="input-group-1"
+                        label="Category Name:"
+                        label-for="input-1"
+                      >
                         <b-form-input
                           id="input-1"
                           v-model="form.category_name"
@@ -39,7 +46,11 @@
                         ></b-form-input>
                       </b-form-group>
 
-                      <b-form-group id="input-group-4" label="Category Status:" label-for="input-4">
+                      <b-form-group
+                        id="input-group-4"
+                        label="Category Status:"
+                        label-for="input-4"
+                      >
                         <b-form-select
                           id="input-4"
                           v-model="form.category_status"
@@ -47,13 +58,17 @@
                           required
                         ></b-form-select>
                       </b-form-group>
-                      <button type="submit" class="btn-pink" v-show="!isUpdate">Add</button>
+                      <button type="submit" class="btn-pink" v-show="!isUpdate">
+                        Add
+                      </button>
                       <button
                         type="button"
                         class="btn-pink"
                         v-show="isUpdate"
                         @click="patchCategory()"
-                      >Update</button>
+                      >
+                        Update
+                      </button>
                     </form>
                   </b-modal>
                 </th>
@@ -70,12 +85,14 @@
                   v-b-modal.modal-1
                   variant="outline-primary"
                   v-on:click="setCategory(item)"
-                >Update</b-button>
+                  >Update</b-button
+                >
                 <b-button
                   variant="outline-danger"
                   @click="deleteCategory(item)"
                   style="color:red;cursor:pointer;margin-left:10px"
-                >Delete</b-button>
+                  >Delete</b-button
+                >
               </td>
             </tr>
           </table>

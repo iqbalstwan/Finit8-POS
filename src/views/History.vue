@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import HistHeader from '../components/_base/HistHeader'
+import HistHeader from '../components/_base/Histheader'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
