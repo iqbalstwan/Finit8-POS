@@ -11,6 +11,8 @@
 
 Finit8
 
+![smartmockups_kgbo9b42](https://user-images.githubusercontent.com/67113526/96209598-35631c00-0f9a-11eb-96c2-08dad365689f.jpg)
+
 ## Built With
 
 [![Vue](https://img.shields.io/badge/Vue-v2.6.11-green)](https://github.com/vuejs/vue)
