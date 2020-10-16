@@ -20,6 +20,7 @@
                 <th style="text-align: center">
                   Button
                   <b-button
+                    v-b-popover.hover.top="'Add Product'"
                     @click="showModal"
                     class="addCategory"
                     style="background-color:transparent;border:none;height:25px"
@@ -82,17 +83,19 @@
               <td>{{ item.category_update_at }}</td>
               <td>
                 <b-button
+                  v-b-popover.hover.top="'Update'"
                   v-b-modal.modal-1
                   variant="outline-primary"
                   v-on:click="setCategory(item)"
-                  >Update</b-button
-                >
+                  ><b-icon icon="pencil" aria-hidden="true"></b-icon
+                ></b-button>
                 <b-button
+                  v-b-popover.hover.top="'Delete'"
                   variant="outline-danger"
                   @click="deleteCategory(item)"
                   style="color:red;cursor:pointer;margin-left:10px"
-                  >Delete</b-button
-                >
+                  ><b-icon icon="trash" aria-hidden="true"></b-icon
+                ></b-button>
               </td>
             </tr>
           </table>
@@ -292,26 +295,58 @@ export default {
         category_id: data.category_id,
         form: data
       }
-      // // console.log(setData)
-      this.deleteCategorys(setData)
-        .then(response => {
-          this.alert = true
-          this.isMsg = response.msg
-          this.get_category()
-          this.$bvToast.toast(`${response.msg}`, {
-            title: 'Deleted ',
-            variant: 'danger',
-            solid: true
-          })
+      this.$bvModal
+        .msgBoxConfirm(`Are you sure want to delete ${data.category_name} ?`, {
+          title: 'Delete Product',
+          size: 'md',
+          buttonSize: 'md',
+          okVariant: 'danger',
+          okTitle: 'YES',
+          cancelTitle: 'NO',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
         })
+        .then(response => {
+          if (response === true) {
+            this.deleteCategorys(setData, this.$bvModal)
+              .then(response => {
+                this.isMsg = response.msg
+                this.get_category()
+                this.$bvToast.toast(`${response.msg}`, {
+                  title: 'Deleted ',
+                  variant: 'success',
+                  solid: true
+                })
+                this.closeModal()
+                this.isUpdate = false
+                // this.get_product()
+              })
+              .catch(error => {
+                this.alert = true
+                this.isMsg = error.data.msg
+                this.$bvToast.toast(`${error.data.msg}`, {
+                  title: 'Delete ',
+                  variant: 'danger',
+                  solid: true
+                })
+              })
+          }
+        })
+        // // console.log(setData)
+        // this.deleteCategorys(setData)
+        //   .then(response => {
+        //     this.alert = true
+        //     this.isMsg = response.msg
+        //     this.get_category()
+        //     this.$bvToast.toast(`${response.msg}`, {
+        //       title: 'Deleted ',
+        //       variant: 'danger',
+        //       solid: true
+        //     })
+        //   })
         .catch(error => {
-          this.alert = true
-          this.isMsg = error.data.msg
-          this.$bvToast.toast(`${error.data.msg}`, {
-            title: 'You are... ',
-            variant: 'danger',
-            solid: true
-          })
+          console.log(error)
         })
     },
     showModal() {

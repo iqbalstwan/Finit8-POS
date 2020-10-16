@@ -5,6 +5,7 @@ body {
 }
 /* top md8 */
 /* menu */
+
 .home .col-md-8 {
   display: flex;
   justify-content: space-between;
@@ -19,7 +20,6 @@ body {
   background: white;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
-
 /* .menu-icon {
   padding-top: 20px;
   padding-left: 30px;
@@ -132,7 +132,6 @@ body {
 } */
 
 .sidebar .col-md-7 .row {
-  /* text-align: center; */
   background: rgba(190, 195, 202, 0.3);
 }
 
@@ -379,8 +378,8 @@ body {
   .col-md-4 button .cancel {
     margin-top: 10px;
     background: #f24f8a;
-    font-size: 25px ;
-    width: 100% ;
+    font-size: 25px;
+    width: 100%;
     font-weight: bold;
     text-align: center;
     color: white;
@@ -399,7 +398,7 @@ body {
     color: white;
     background: #57cad5;
   }
-  
+
   .col-md-4 .cartIn .total-box .cancel {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -415,7 +414,7 @@ body {
     font-size: 20px;
     /* line-height: 39px; */
   }
-  
+
   .sidebar .col-md-4 p {
     font-size: 15px;
     line-height: 39px;
@@ -464,8 +463,8 @@ body {
   .col-md-4 button .cancel {
     margin-top: 10px;
     background: #f24f8a;
-    font-size: 25px ;
-    width: 450px ;
+    font-size: 25px;
+    width: 450px;
     font-weight: bold;
     text-align: center;
     color: white;
@@ -484,7 +483,7 @@ body {
     color: white;
     background: #57cad5;
   }
-  
+
   .col-md-4 .cartIn .total-box .cancel {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -500,7 +499,7 @@ body {
     font-size: 30px;
     /* line-height: 39px; */
   }
-  
+
   .sidebar .col-md-4 p {
     font-size: 18px;
     line-height: 39px;
@@ -549,8 +548,8 @@ body {
   .col-md-4 button .cancel {
     margin-top: 10px;
     background: #f24f8a;
-    font-size: 25px ;
-    width: 450px ;
+    font-size: 25px;
+    width: 450px;
     font-weight: bold;
     text-align: center;
     color: white;
@@ -569,7 +568,7 @@ body {
     color: white;
     background: #57cad5;
   }
-  
+
   .col-md-4 .cartIn .total-box .cancel {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -588,16 +587,15 @@ body {
     font-size: 30px;
     /* line-height: 39px; */
   }
-  
+
   .sidebar .col-md-4 p {
     font-size: 18px;
     line-height: 39px;
     color: #cecece;
-  } 
+  }
 }
 
 @media (min-width: 426px) and (max-width: 768px) {
-
   .sidebar .col-md-7 .col img {
     width: 180px;
     height: 150px;
@@ -640,8 +638,8 @@ body {
   .col-md-4 button .cancel {
     margin-top: 10px;
     background: #f24f8a;
-    font-size: 25px ;
-    width: 450px ;
+    font-size: 25px;
+    width: 450px;
     font-weight: bold;
     text-align: center;
     color: white;
@@ -660,7 +658,7 @@ body {
     color: white;
     background: #57cad5;
   }
-  
+
   .col-md-4 .cartIn .total-box .cancel {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -679,16 +677,15 @@ body {
     font-size: 30px;
     /* line-height: 39px; */
   }
-  
+
   .sidebar .col-md-4 p {
     font-size: 18px;
     line-height: 39px;
     color: #cecece;
-  } 
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
-
   .sidebar .col-md-7 .col img {
     width: 170px;
     height: 150px;
@@ -714,15 +711,15 @@ body {
     margin-left: 0.6em;
     margin-top: 2em;
   }
-  
+
   .col-md-1 .add {
     margin-top: 13px;
   }
   .col-md-4 button .cancel {
     margin-top: 10px;
     background: #f24f8a;
-    font-size: 25px ;
-    width: 100% ;
+    font-size: 25px;
+    width: 100%;
     font-weight: bold;
     text-align: center;
     color: white;
@@ -741,7 +738,7 @@ body {
     color: white;
     background: #57cad5;
   }
-  
+
   .col-md-4 .cartIn .total-box .cancel {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -760,16 +757,15 @@ body {
     font-size: 20px;
     /* line-height: 39px; */
   }
-  
+
   .sidebar .col-md-4 p {
     font-size: 15px;
     line-height: 39px;
     color: #cecece;
-  } 
+  }
 }
 
 @media (min-width: 1025px) and (max-width: 1439px) {
-
   .sidebar .col-md-7 .col img {
     width: 200px;
     height: 200px;
@@ -795,14 +791,14 @@ body {
     margin-left: 0.6em;
     margin-top: 3.5em;
   }
-  
+
   .col-md-1 .add {
     margin-top: 13px;
   }
   .col-md-4 button .cancel {
     margin-top: 10px;
     background: #f24f8a;
-    font-size: 25px ;
+    font-size: 25px;
     width: 100%;
     font-weight: bold;
     text-align: center;
@@ -822,7 +818,7 @@ body {
     color: white;
     background: #57cad5;
   }
-  
+
   .col-md-4 .cartIn .total-box .cancel {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -841,10 +837,10 @@ body {
     font-size: 20px;
     /* line-height: 39px; */
   }
-  
+
   .sidebar .col-md-4 p {
     font-size: 15px;
     line-height: 39px;
     color: #cecece;
-  } 
+  }
 }

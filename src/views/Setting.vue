@@ -14,7 +14,6 @@ export default {
   components: {
     HistHeader,
     HistContent
-    // Histcontent
   }
 }
 </script>

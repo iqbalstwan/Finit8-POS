@@ -22,5 +22,5 @@ new Vue({
 }).$mount('#app')
 
 Vue.directive('font-size', (el, binding, vnode) => {
-  el.style.fontSize = 12 + 'px'
+  el.style.fontSize = binding.value + 'px'
 })

@@ -28,7 +28,7 @@
       <b-button pill type="submit" @click.prevent="userRegister"
         >Register</b-button
       >
-      <h1 v-font-size style="text-align:center;margin-top:15px">
+      <h1 v-font-size="12" style="text-align:center;margin-top:15px">
         Already have an account?
         <router-link to="/login">Sign in</router-link>
       </h1>

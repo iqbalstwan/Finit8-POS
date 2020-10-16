@@ -19,7 +19,7 @@
         placeholder="Enter password"
       ></b-form-input>
       <b-button pill type="submit">Login</b-button>
-      <h1 v-font-size style="text-align:center;margin-top:15px">
+      <h1 style="font-size:12px;text-align:center;margin-top:15px">
         Don't have an account?
         <router-link to="/register">Sign Up</router-link>
       </h1>

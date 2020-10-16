@@ -26,7 +26,11 @@
 
                   <b-modal ref="my-modal" title :hide-footer="true">
                     <form v-on:submit.prevent="addUser">
-                      <b-form-group id="input-group-1" label="Email:" label-for="input-1">
+                      <b-form-group
+                        id="input-group-1"
+                        label="Email:"
+                        label-for="input-1"
+                      >
                         <b-form-input
                           id="input-1"
                           v-model="form.user_email"
@@ -36,7 +40,11 @@
                         ></b-form-input>
                       </b-form-group>
 
-                      <b-form-group id="input-group-1" label="Password:" label-for="input-1">
+                      <b-form-group
+                        id="input-group-1"
+                        label="Password:"
+                        label-for="input-1"
+                      >
                         <b-form-input
                           id="input-1"
                           v-model="form.user_password"
@@ -46,7 +54,11 @@
                         ></b-form-input>
                       </b-form-group>
 
-                      <b-form-group id="input-group-4" label="User Status:" label-for="input-4">
+                      <b-form-group
+                        id="input-group-4"
+                        label="User Status:"
+                        label-for="input-4"
+                      >
                         <b-form-select
                           id="input-4"
                           v-model="form.user_status"
@@ -54,13 +66,17 @@
                           required
                         ></b-form-select>
                       </b-form-group>
-                      <button type="submit" class="btn-pink" v-show="!isUpdate">Add</button>
+                      <button type="submit" class="btn-pink" v-show="!isUpdate">
+                        Add
+                      </button>
                       <button
                         type="button"
                         class="btn-pink"
                         v-show="isUpdate"
                         @click="patchUser()"
-                      >Update</button>
+                      >
+                        Update
+                      </button>
                     </form>
                   </b-modal>
                 </th>
@@ -73,10 +89,12 @@
               <td>{{ item.user_status }}</td>
               <td>
                 <b-button
+                  v-b-popover.hover.top="'Update'"
                   v-b-modal.modal-1
                   variant="outline-primary"
                   v-on:click="setUser(item)"
-                >Update</b-button>
+                  ><b-icon icon="pencil" aria-hidden="true"></b-icon
+                ></b-button>
                 <!-- <b-button
                   variant="outline-danger"
                   @click="deleteUser(item)"

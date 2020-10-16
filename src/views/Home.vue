@@ -99,7 +99,6 @@
               </b-button>
               <b-modal ref="my-modal" title :hide-footer="true">
                 <form v-on:submit.prevent="addProduct">
-                  <!-- <b-alert :show="alert">{{ isMsg }}</b-alert> -->
                   <b-form-group
                     id="input-group-1"
                     label="Product Name:"
@@ -179,21 +178,25 @@
                   <select v-model="defaultSort" @change="handleSort">
                     <option value>-Sort by-</option>
                     <optgroup label="Name">
-                      <option value="product_name">Name</option>
+                      <option value="product_name">Name (A-Z)</option>
                       <option value="product_name DESC">Name (Z-A)</option>
                     </optgroup>
                     <optgroup label="Category">
-                      <option value="category_id">Category</option>
+                      <option value="category_id">Category (A-Z)</option>
                       <option value="category_id DESC">Category (Z-A)</option>
                     </optgroup>
-                    <optgroup label="PRICE">
-                      <option value="product_price">Price</option>
+                    <optgroup label="Price">
+                      <option value="product_price"
+                        >Price (Lowest-Highest)</option
+                      >
                       <option value="product_price DESC"
                         >Price (Highest-Lowest)</option
                       >
                     </optgroup>
-                    <optgroup label="DATE">
-                      <option value="product_created_at ">Date</option>
+                    <optgroup label="Date">
+                      <option value="product_created_at "
+                        >Date (Newest-Oldest)</option
+                      >
                       <option value="product_created_at DESC"
                         >Date (Oldest-Newest)</option
                       >
@@ -221,29 +224,25 @@
                   >
                     <img
                       style="width:30px;height:45px;margin-top:-25px"
-                      src="../assets/img/cart.png"
+                      src="../assets/img/newCart.png"
                     />
                   </b-button>
-                  <!-- <div class="button-bot"> -->
-                  <!-- modal Update -->
                   <b-button
                     v-b-popover.hover.top="'Update'"
                     v-b-modal.modal-1
                     variant="outline-primary"
                     v-on:click="setProduct(item)"
                     v-if="user.user_role === 1"
-                    >Up</b-button
-                  >
+                    ><b-icon icon="pencil" aria-hidden="true"></b-icon
+                  ></b-button>
                   <b-button
                     v-b-popover.hover.top="'Delete'"
                     variant="outline-danger"
                     @click.prevent="deleteProduct(item)"
                     style="color:red;cursor:pointer;margin-left:10px"
                     v-if="user.user_role === 1"
-                    >Del</b-button
-                  >
-                  <!-- </div> -->
-                  <!-- <p v-if="checkCart(item)">checklist</p> -->
+                    ><b-icon icon="trash" aria-hidden="true"></b-icon
+                  ></b-button>
                 </div>
               </b-col>
               <b-col cols="12">
@@ -294,12 +293,12 @@
                   </div>
                   <div class="price">
                     <b-button
-                      style="margin-bottom:10px;width:100%"
-                      class="remove-cart"
+                      style="margin-bottom:10px;width:60%"
+                      class="remove-cart text-center"
                       variant="danger"
                       @click="removeCart(item)"
-                      >Remove</b-button
-                    >
+                      ><b-icon icon="trash" aria-hidden="true"></b-icon
+                    ></b-button>
                     <p style="margin-top:15px;color:grey">
                       Rp.{{ item.product_price * item.order_qty }}
                     </p>
@@ -315,7 +314,6 @@
                   <h4>Rp. {{ totally }}</h4>
                 </div>
               </div>
-              <!-- @click="postOrder()" -->
               <div class="total-box">
                 <div class="checkout">
                   <b-button
@@ -374,15 +372,17 @@
                         </div>
                       </div>
                       <b-button
+                        v-font-size="25"
                         @click="download()"
                         class="print"
-                        style="width:100%;background: #f24f8a;border:none;font-size: 25px;margin-top:20px"
+                        style="width:100%;background: #f24f8a;border:none;margin-top:20px"
                         >Print</b-button
                       >
                       <div style="text-align:center;margin-top:10px">OR</div>
                       <b-button
+                        v-font-size="25"
                         class="email"
-                        style="width:100%;background: #57cad5;border:none;font-size: 25px;margin-top:20px"
+                        style="width:100%;background: #57cad5;border:none;margin-top:20px"
                         @click="clearCart()"
                         >Send Email</b-button
                       >
@@ -401,15 +401,17 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import mixins from '../mixin/mixin'
 import JsPDF from 'jspdf'
 // import axios from 'axios'
-// import Header from '../components/_base/Header'
+// import Emptycart from '../components/_base/Emptycart'
 // import Menu from '../components/_base/Menu'
 
 export default {
   name: 'Home',
+  mixins: [mixins],
   component: {
-    // Header
+    // Emptycart
   },
   data() {
     return {
@@ -419,11 +421,7 @@ export default {
       defaultSort: '',
       url: process.env.VUE_APP_URL,
       find: '',
-      // limit: 6,
-      // totalData: 1,
       showPagination: true,
-      // sort: '',
-      // products: [],
       qty: 1,
       modalCheckOut: {},
       form: {
@@ -435,19 +433,17 @@ export default {
       },
       category: [
         { text: 'Select Category', value: null },
-        '1',
-        '2',
-        '3',
-        '4',
-        '13'
+        { text: 'Food', value: '1' },
+        { text: 'Milk', value: '2' },
+        { text: 'Beverages', value: '3' },
+        { text: 'Meals', value: '4' },
+        { text: 'Coffes', value: '13' }
       ],
       status: [{ text: 'Select Status', value: null }, '0', '1'],
       alert: false,
-      // search: '',
       isSearch: false,
       isMsg: '',
       isUpdate: false
-      // isLogout: ''
     }
   },
   created() {
@@ -564,11 +560,7 @@ export default {
             variant: 'danger',
             solid: true
           })
-          // alert(error.data.msg)
         })
-      // .then(response => {})
-      // .catch(error => {})
-      //   console.log(this.form)
     },
     setProduct(data) {
       this.form = {
@@ -581,7 +573,6 @@ export default {
       this.isUpdate = true
       this.$refs['my-modal'].show()
       this.product_id = data.product_id
-      // console.log(data.product_id)
     },
     patchProduct() {
       const data = new FormData()
@@ -634,40 +625,46 @@ export default {
         product_id: data.product_id,
         form: data
       }
-      // this.$bvModal
-      //   .msgBoxConfirm('Are you sure?', {
-      //     cancelVariant: 'light',
-      //     okVariant: 'info',
-      //     headerClass: 'p-2 border-bottom-0',
-      //     footerClass: 'p-2 border-top-0',
-      //     centered: true
-      //   })
-      // .then(item => {
-      //   this.del = item
-      //   this.del
-      //     ? this.deleteProducts(this.$bvModal, setData)
-      //     : console.log(item)
-      // })
-      // // console.log(setData)
-      this.deleteProducts(setData, this.$bvModal)
+      this.$bvModal
+        .msgBoxConfirm(`Are you sure want to delete ${data.product_name} ?`, {
+          title: 'Delete Product',
+          size: 'md',
+          buttonSize: 'md',
+          okVariant: 'danger',
+          okTitle: 'Yes',
+          cancelTitle: 'Cancel',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        })
         .then(response => {
-          this.alert = true
-          this.isMsg = response.msg
-          this.get_product()
-          this.$bvToast.toast(`${response.msg}`, {
-            title: 'Deleted ',
-            variant: 'danger',
-            solid: true
-          })
+          if (response === true) {
+            this.deleteProducts(setData, this.$bvModal)
+              .then(response => {
+                this.isMsg = response.msg
+                this.get_product()
+                this.$bvToast.toast(`${response.msg}`, {
+                  title: 'Deleted ',
+                  variant: 'success',
+                  solid: true
+                })
+                this.closeModal()
+                this.isUpdate = false
+                // this.get_product()
+              })
+              .catch(error => {
+                this.alert = true
+                this.isMsg = error.data.msg
+                this.$bvToast.toast(`${error.data.msg}`, {
+                  title: 'Delete ',
+                  variant: 'danger',
+                  solid: true
+                })
+              })
+          }
         })
         .catch(error => {
-          this.alert = true
-          this.isMsg = error.data.msg
-          this.$bvToast.toast(`${error.data.msg}`, {
-            title: 'Delete ',
-            variant: 'danger',
-            solid: true
-          })
+          console.log(error)
         })
     },
     postOrder() {
@@ -698,12 +695,6 @@ export default {
     checkCart(data) {
       return this.cart.some(item => item.product_id === data.product_id)
     },
-    // removeCart(data) {
-    //   return this.cart.splice(
-    //     this.cart.findIndex(item => item.product_id === data.product_id),
-    //     1
-    //   )
-    // },
     showModal() {
       this.form = {
         category_id: '',
@@ -718,8 +709,6 @@ export default {
       this.$refs['my-modal'].hide()
     },
     toggleModal() {
-      // We pass the ID of the button that we want to return focus to
-      // when the modal has hidden
       this.$refs['my-modal'].toggle('#toggle-btn')
     },
 
@@ -732,13 +721,6 @@ export default {
         this.setSearch(this.find)
         this.searching()
       }
-    },
-    handleSort(event) {
-      console.log(event.target.value)
-      this.$router.push(`?sort=${event.target.value}`)
-      this.setSort(event.target.value)
-      // console.log(value)
-      this.get_product()
     },
     pageChange(event) {
       this.$router.push(`?page=${event}`)
