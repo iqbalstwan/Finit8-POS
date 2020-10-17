@@ -1,10 +1,10 @@
 <h1 align='center'>FINIT8</h1>
   <p align="center">
-    <a href="/">View Demo</a>
+    <a href="https://finit8.netlify.app/">View Demo</a>
     ·
-    <a href="/">Report Bug</a>
+    <a href="https://github.com/iqbalstwan/Finit8-POS/issues">Report Bug</a>
     ·
-    <a href="/">Request Feature</a>
+    <a href="https://github.com/iqbalstwan/Finit8-POS/issues">Request Feature</a>
   </p>
   
 ## About The Project

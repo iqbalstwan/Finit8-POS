@@ -514,19 +514,20 @@ export default {
       doc.setFontSize(14)
       doc.text(
         `- FINIT8 -
-
+      
       Cashier : ${this.user.user_name}
       Receipt no : #${this.modalCheckOut}
       Item: ${this.cart[0].product_name}x${this.cart[0].order_qty}  Rp.${this
           .cart[0].product_price * this.cart[0].order_qty}
       Ppn10% : Rp.${(this.totally * 10) / 100}
       Total : Rp.${this.totally + (this.totally * 10) / 100}
-      Date : ${new Date()}`,
+      Date : ${new Date()}
+     `,
         15,
         15
       )
 
-      doc.save('pdf.pdf')
+      doc.save('finit8.pdf')
     },
     handleFile(event) {
       this.form.product_img = event.target.files[0]
