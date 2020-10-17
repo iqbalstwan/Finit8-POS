@@ -9,7 +9,7 @@
   
 ## About The Project
 
-Finit8
+This project name called Finit8, it means you can Find all menu infinity in this application. Finit8 is POS-app(point-of-sales) based on website application, especially designed to make your business easier. Finit8 can manage multiple orders at the same time and you can overview the report from history.
 
 ![smartmockups_kgbo9b42](https://user-images.githubusercontent.com/67113526/96209598-35631c00-0f9a-11eb-96c2-08dad365689f.jpg)
 
