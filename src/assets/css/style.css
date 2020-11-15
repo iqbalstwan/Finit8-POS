@@ -507,7 +507,96 @@ body {
     color: #cecece;
   }
 }
-@media (min-width: 376px) and (max-width: 425px) {
+@media (min-width: 376px) and (max-width: 400px) {
+  .col-md-7 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .row .select-image {
+    width: 250px;
+    height: 180px;
+    margin-top: 20px;
+    margin-left: 3.1em;
+    border-radius: 10px 10px 0px 0px;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    text-align: center;
+    top: 0;
+  }
+  .row .select-image img {
+    width: 250px;
+    height: 180px;
+    margin-left: 0.5em;
+    margin-top: 3.5em;
+  }
+  .sidebar .col-md-1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  }
+  .col-md-1 .add {
+    margin-top: 13px;
+  }
+  .col-md-4 button .cancel {
+    margin-top: 10px;
+    background: #f24f8a;
+    font-size: 25px;
+    width: 450px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+  }
+  .sidebar .col-md-4 .cartIn .img-cart img {
+    width: 100px;
+    height: 100px;
+  }
+  .col-md-4 .total-box .checkout .btn-primary {
+    margin-top: 10px;
+    width: 100%;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    color: white;
+    background: #57cad5;
+  }
+
+  .col-md-4 .cartIn .total-box .cancel {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #f24f8a;
+    font-size: 25px;
+    width: 100%;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+  }
+  .col-md-4 .cartIn .total-box .checkout .line1 .fourth .print {
+    width: 200px;
+  }
+  .sidebar .col-md-4 h4 {
+    font-size: 30px;
+    /* line-height: 39px; */
+  }
+
+  .sidebar .col-md-4 p {
+    font-size: 18px;
+    line-height: 39px;
+    color: #cecece;
+  }
+}
+
+@media (min-width: 401px) and (max-width: 425px) {
   .col-md-7 {
     display: flex;
     flex-wrap: wrap;
