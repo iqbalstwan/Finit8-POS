@@ -434,9 +434,10 @@ body {
     height: 180px;
     margin-top: 20px;
     margin-left: 3em;
+    /* margin-right: auto; */
     border-radius: 10px 10px 0px 0px;
     background-color: rgba(0, 0, 0, 0.6);
-    position: absolute;
+    /* position: absolute; */
     text-align: center;
     top: 0;
   }
@@ -560,7 +561,7 @@ body {
   }
   .col-md-4 .total-box .checkout .btn-primary {
     margin-top: 10px;
-    width: 395px;
+    width: 100%;
     font-size: 25px;
     font-weight: bold;
     text-align: center;
@@ -574,7 +575,7 @@ body {
     margin-bottom: 10px;
     background: #f24f8a;
     font-size: 25px;
-    width: 395px;
+    width: 100%;
     border: none;
     font-weight: bold;
     text-align: center;
