@@ -19,8 +19,11 @@
   border-color: pink;
   outline: none;
   border: none;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
   background: transparent;
-  border-bottom: 1px solid #fff;
+  /* border-bottom: 1px soli  d #fff; */
   transition: 0.5s;
 }
 
@@ -30,7 +33,10 @@
   outline: none;
   border: none;
   background: transparent;
-  border-bottom: 1px solid #fff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  /* border-bottom: 1px solid #fff; */
   transition: 0.5s;
 }
 .login-box .user-email input:focus ~ label,
@@ -42,9 +48,10 @@
 }
 
 .login .btn {
+  width: 100%;
   align-items: center;
   margin-top: 15px;
-  margin-left: 4.2em;
+  /* margin-left: 5.3em; */
   border: none;
   background: #f24f8a;
 }

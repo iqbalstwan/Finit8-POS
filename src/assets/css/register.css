@@ -20,7 +20,10 @@
   outline: none;
   border: none;
   background: transparent;
-  border-bottom: 1px solid #fff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  /* border-bottom: 1px solid #fff; */
   transition: 0.5s;
 }
 
@@ -30,7 +33,10 @@
   outline: none;
   border: none;
   background: transparent;
-  border-bottom: 1px solid #fff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  /* border-bottom: 1px solid #fff; */
   transition: 0.5s;
 }
 .register .form-username {
@@ -39,7 +45,10 @@
   outline: none;
   border: none;
   background: transparent;
-  border-bottom: 1px solid #fff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  /* border-bottom: 1px solid #fff; */
   transition: 0.5s;
 }
 .login-box .user-email input:focus ~ label,
@@ -51,8 +60,9 @@
 }
 
 .register .btn {
+  width: 100%;
   align-items: center;
-  margin-left: 3.7em;
+  /* margin-left: 3.7em; */
   border: none;
   background: #f24f8a;
 }
