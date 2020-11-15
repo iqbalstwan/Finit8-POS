@@ -75,7 +75,7 @@
               <b-button
                 @click="showModal"
                 class="add"
-                style="background-color:transparent;border:none"
+                style="background-color:transparent;border:none;box-shadow:none"
               >
                 <img v-b-popover.hover.top="'Add'" src="../assets/img/add.png" />
               </b-button>
