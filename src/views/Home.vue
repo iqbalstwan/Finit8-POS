@@ -6,32 +6,29 @@
         <b-col md="8">
           <div class="menu-icon">
             <b-button
-              style="background-color:transparent;border:none"
+              style="background-color:transparent;border:none;box-shadow:none"
               v-b-toggle.sidebar-1
             >
               <img src="../assets/img/menu.png" />
             </b-button>
-            <b-sidebar
-              class="aside text-center"
-              id="sidebar-1"
-              title="Hello..."
-              shadow
-              bg-variant="light"
-            >
-              <router-link to="/admin" v-if="user.user_role === 1">
+            <b-sidebar class="aside text-center" id="sidebar-1" shadow bg-variant="light">
+              <h3
+                style="text-align:center;margin-bottom:10px;font-weight:bold;border-bottom: 2px solid rgb(200, 200, 200)"
+              >Hello, {{ user.user_name }}</h3>
+              <router-link to="/admin" v-if="user.user_role === 1" style="color:black">
                 <h3 style="cursor:pointer;color:black">
                   <img style="height:30px" src="../assets/img/admin.png" />
                   Admin
                 </h3>
               </router-link>
-              <router-link to="/setting" v-if="user.user_role === 1">
+              <router-link to="/setting" v-if="user.user_role === 1" style="color:black">
                 <h3 style="cursor:pointer;color:black">
-                  <img style="height:30px" src="../assets/img/list.png" />
+                  <img style="height:30px" src="../assets/img/newList.png" />
                   Setting
                 </h3>
               </router-link>
               <h3 style="cursor:pointer" @click="handleLogout">
-                <img style="height:30px" src="../assets/img/logout.png" />
+                <img style="height:30px" src="../assets/img/newLog.png" />
                 Logout
               </h3>
             </b-sidebar>
@@ -48,14 +45,8 @@
                 v-model="find"
                 @change="searchProduct"
               />
-              <button
-                type="reset"
-                style="background:transparent;background:white;border:none"
-              >
-                <img
-                  style="text-color:white"
-                  src="../assets/img/magnifying-glass.png"
-                />
+              <button type="reset" style="background:transparent;background:white;border:none;">
+                <img style="text-color:white;" src="../assets/img/magnifying-glass.png" />
               </button>
             </b-form>
           </div>
@@ -73,17 +64,11 @@
         <div class="row">
           <b-col cols md="1 text-center">
             <div class="fork">
-              <img
-                v-b-popover.hover.top="'Menu'"
-                src="../assets/img/fork.png"
-              />
+              <img v-b-popover.hover.top="'Menu'" src="../assets/img/fork.png" />
             </div>
             <div class="clipboard">
               <router-link to="/history">
-                <img
-                  v-b-popover.hover.top="'History'"
-                  src="../assets/img/clipboard.png"
-                />
+                <img v-b-popover.hover.top="'History'" src="../assets/img/clipboard.png" />
               </router-link>
             </div>
             <div>
@@ -92,18 +77,11 @@
                 class="add"
                 style="background-color:transparent;border:none"
               >
-                <img
-                  v-b-popover.hover.top="'Add'"
-                  src="../assets/img/add.png"
-                />
+                <img v-b-popover.hover.top="'Add'" src="../assets/img/add.png" />
               </b-button>
               <b-modal ref="my-modal" title :hide-footer="true">
                 <form v-on:submit.prevent="addProduct">
-                  <b-form-group
-                    id="input-group-1"
-                    label="Product Name:"
-                    label-for="input-1"
-                  >
+                  <b-form-group id="input-group-1" label="Product Name:" label-for="input-1">
                     <b-form-input
                       id="input-1"
                       v-model="form.product_name"
@@ -113,11 +91,7 @@
                     ></b-form-input>
                   </b-form-group>
 
-                  <b-form-group
-                    id="input-group-2"
-                    label="Price:"
-                    label-for="input-2"
-                  >
+                  <b-form-group id="input-group-2" label="Price:" label-for="input-2">
                     <b-form-input
                       id="input-2"
                       v-model="form.product_price"
@@ -125,17 +99,9 @@
                       placeholder="Input Price"
                     ></b-form-input>
                   </b-form-group>
-                  <b-form-group
-                    id="input-group-2"
-                    label="Image:"
-                    label-for="input-2"
-                  ></b-form-group>
+                  <b-form-group id="input-group-2" label="Image:" label-for="input-2"></b-form-group>
                   <input type="file" @change="handleFile" required />
-                  <b-form-group
-                    id="input-group-4"
-                    label="Category:"
-                    label-for="input-4"
-                  >
+                  <b-form-group id="input-group-4" label="Category:" label-for="input-4">
                     <b-form-select
                       id="input-4"
                       v-model="form.category_id"
@@ -144,11 +110,7 @@
                     ></b-form-select>
                   </b-form-group>
 
-                  <b-form-group
-                    id="input-group-4"
-                    label="Product Status:"
-                    label-for="input-4"
-                  >
+                  <b-form-group id="input-group-4" label="Product Status:" label-for="input-4">
                     <b-form-select
                       id="input-4"
                       v-model="form.product_status"
@@ -156,17 +118,13 @@
                       required
                     ></b-form-select>
                   </b-form-group>
-                  <button type="submit" class="btn-pink" v-show="!isUpdate">
-                    Add
-                  </button>
+                  <button type="submit" class="btn-pink" v-show="!isUpdate">Add</button>
                   <button
                     type="button"
                     class="btn-pink"
                     v-show="isUpdate"
                     @click="patchProduct()"
-                  >
-                    Update
-                  </button>
+                  >Update</button>
                 </form>
               </b-modal>
             </div>
@@ -186,20 +144,12 @@
                       <option value="category_id DESC">Category (Z-A)</option>
                     </optgroup>
                     <optgroup label="Price">
-                      <option value="product_price"
-                        >Price (Lowest-Highest)</option
-                      >
-                      <option value="product_price DESC"
-                        >Price (Highest-Lowest)</option
-                      >
+                      <option value="product_price">Price (Lowest-Highest)</option>
+                      <option value="product_price DESC">Price (Highest-Lowest)</option>
                     </optgroup>
                     <optgroup label="Date">
-                      <option value="product_created_at "
-                        >Date (Newest-Oldest)</option
-                      >
-                      <option value="product_created_at DESC"
-                        >Date (Oldest-Newest)</option
-                      >
+                      <option value="product_created_at ">Date (Newest-Oldest)</option>
+                      <option value="product_created_at DESC">Date (Oldest-Newest)</option>
                     </optgroup>
                   </select>
                 </div>
@@ -233,16 +183,18 @@
                     variant="outline-primary"
                     v-on:click="setProduct(item)"
                     v-if="user.user_role === 1"
-                    ><b-icon icon="pencil" aria-hidden="true"></b-icon
-                  ></b-button>
+                  >
+                    <b-icon icon="pencil" aria-hidden="true"></b-icon>
+                  </b-button>
                   <b-button
                     v-b-popover.hover.top="'Delete'"
                     variant="outline-danger"
                     @click.prevent="deleteProduct(item)"
                     style="color:red;cursor:pointer;margin-left:10px"
                     v-if="user.user_role === 1"
-                    ><b-icon icon="trash" aria-hidden="true"></b-icon
-                  ></b-button>
+                  >
+                    <b-icon icon="trash" aria-hidden="true"></b-icon>
+                  </b-button>
                 </div>
               </b-col>
               <b-col cols="12">
@@ -271,25 +223,15 @@
             </div>
             <div class="cartIn" v-if="cart.length > 0">
               <div style="height:400px;overflow-y: auto;">
-                <div
-                  class="img-cart"
-                  v-for="(item, index) in cart"
-                  :key="index"
-                >
+                <div class="img-cart" v-for="(item, index) in cart" :key="index">
                   <div class="hover">
                     <img :src="url + '/' + item.product_img" alt />
                   </div>
                   <div class="items">
                     <p style="color:grey">{{ item.product_name }}</p>
-                    <b-button variant="success" @click="decrement(item)"
-                      >-</b-button
-                    >
-                    <b-button variant="outline-success">
-                      {{ item.order_qty }}
-                    </b-button>
-                    <b-button variant="success" @click="increment(item)"
-                      >+</b-button
-                    >
+                    <b-button variant="success" @click="decrement(item)">-</b-button>
+                    <b-button variant="outline-success">{{ item.order_qty }}</b-button>
+                    <b-button variant="success" @click="increment(item)">+</b-button>
                   </div>
                   <div class="price">
                     <b-button
@@ -297,11 +239,12 @@
                       class="remove-cart text-center"
                       variant="danger"
                       @click="removeCart(item)"
-                      ><b-icon icon="trash" aria-hidden="true"></b-icon
-                    ></b-button>
-                    <p style="margin-top:15px;color:grey">
-                      Rp.{{ item.product_price * item.order_qty }}
-                    </p>
+                    >
+                      <b-icon icon="trash" aria-hidden="true"></b-icon>
+                    </b-button>
+                    <p
+                      style="margin-top:15px;color:grey"
+                    >Rp.{{ item.product_price * item.order_qty }}</p>
                   </div>
                 </div>
               </div>
@@ -322,8 +265,7 @@
                     v-b-modal.modal-checkout
                     style="border:none"
                     @click="postOrder()"
-                    >Checkout</b-button
-                  >
+                  >Checkout</b-button>
                   <b-modal
                     id="modal-checkout"
                     title="Checkout"
@@ -333,12 +275,8 @@
                   >
                     <div class="line1">
                       <div class="first">
-                        <div class="cashier">
-                          Cashier : {{ user.user_name }}
-                        </div>
-                        <div class="cashier">
-                          Receipt no: # {{ modalCheckOut }}
-                        </div>
+                        <div class="cashier">Cashier : {{ user.user_name }}</div>
+                        <div class="cashier">Receipt no: # {{ modalCheckOut }}</div>
                       </div>
                       <div
                         class="second"
@@ -366,9 +304,7 @@
                       </div>
                       <div class="fourth" style="text-align:right">
                         <div>
-                          <p>
-                            Total : Rp. {{ totally + (totally * 10) / 100 }}
-                          </p>
+                          <p>Total : Rp. {{ totally + (totally * 10) / 100 }}</p>
                         </div>
                       </div>
                       <b-button
@@ -376,16 +312,14 @@
                         @click="download()"
                         class="print"
                         style="width:100%;background: #f24f8a;border:none;margin-top:20px"
-                        >Print</b-button
-                      >
+                      >Print</b-button>
                       <div style="text-align:center;margin-top:10px">OR</div>
                       <b-button
                         v-font-size="25"
                         class="email"
                         style="width:100%;background: #57cad5;border:none;margin-top:20px"
                         @click="clearCart()"
-                        >Send Email</b-button
-                      >
+                      >Send Email</b-button>
                     </div>
                   </b-modal>
                 </div>

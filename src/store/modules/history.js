@@ -32,7 +32,7 @@ export default {
       payload.map(value => {
         const setData = {
           invoices: value.invoice,
-          cashier: 'Pevita Pearce',
+          cashier: 'wanwan',
           date: value.history_created_at.slice(0, 10),
           orders: value.orders
             .map(item => item.product_name.concat(` ${item.order_qty}x`))
