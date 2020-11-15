@@ -1,6 +1,6 @@
 <template>
   <div class="register container-fluid text center">
-    <h1>SIGN UP</h1>
+    <h1>Sign Up</h1>
     <b-form class="form-data">
       <b-form-input
         id="input-1"
@@ -25,12 +25,10 @@
         required
         placeholder="Enter username"
       ></b-form-input>
-      <b-button pill type="submit" @click.prevent="userRegister"
-        >Register</b-button
-      >
+      <b-button pill type="submit" @click.prevent="userRegister">Register</b-button>
       <h1 v-font-size="12" style="text-align:center;margin-top:15px">
         Already have an account?
-        <router-link to="/login">Sign in</router-link>
+        <router-link to="/login">Login</router-link>
       </h1>
     </b-form>
     <hr />
